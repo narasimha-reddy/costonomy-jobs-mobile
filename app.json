@@ -1,0 +1,66 @@
+{
+  "expo": {
+    "name": "Costonomy Jobs",
+    "slug": "costonomy-jobs",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "scheme": "costonomyjobs",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFFFFF"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.costonomy.jobs",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSPhotoLibraryUsageDescription": "Costonomy Jobs needs photo library access so you can add a profile photo to your job profile.",
+        "NSLocationWhenInUseUsageDescription": "Costonomy Jobs checks your location once, only when you tap 'Check in' at an interview or on your joining day, to confirm you've arrived. It never tracks you in the background."
+      }
+    },
+    "android": {
+      "package": "com.costonomy.jobs",
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF",
+        "foregroundImage": "./assets/android-icon-foreground.png"
+      },
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION"
+      ],
+      "blockedPermissions": [
+        "android.permission.ACCESS_BACKGROUND_LOCATION"
+      ],
+      "notification": {
+        "icon": "./assets/notification-icon.png",
+        "color": "#FF6000"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-secure-store",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": false,
+          "isAndroidBackgroundLocationEnabled": false,
+          "locationWhenInUsePermission": "Costonomy Jobs checks your location once, only when you tap 'Check in' at an interview or on your joining day, to confirm you've arrived. It never tracks you in the background."
+        }
+      ]
+    ],
+    "extra": {
+      "router": {}
+    }
+  }
+}
