@@ -65,6 +65,7 @@ the Alerts tab polls the unread count every 30 seconds.
 
 ## P1 from the backlog
 
-- [ ] In-app chat, replacing the phone-number contact
+- [x] In-app messages — one thread per application, in the Inbox tab (Updates · Messages).
+      The phone-number reveal stays for Find Staff candidates who have not applied
 - [x] Repost a closed job — job menu → Repost job, opens the copy to review and post
 - [x] Post one vacancy to several outlets at once — pick more than one outlet on the job form

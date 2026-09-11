@@ -183,6 +183,18 @@ export const api = {
     }, offset = 0) => request<T.CandidateResult[]>(`/restaurants/${id}/candidates`, { query: { ...query, limit: PAGE, offset } }),
   },
 
+  messages: {
+    thread: (applicationId: number, cursor: { afterId?: number; beforeId?: number } = {}) =>
+      call<T.ChatThread>(`/applications/${applicationId}/messages`, { query: cursor }),
+    send: (applicationId: number, body: string) =>
+      call<T.ChatMessage>(`/applications/${applicationId}/messages`, { method: 'POST', body: { body } }),
+    markRead: (applicationId: number) => call<void>(`/applications/${applicationId}/messages/read`, { method: 'POST' }),
+    report: (applicationId: number, reason: string) =>
+      call<void>(`/applications/${applicationId}/messages/report`, { method: 'POST', body: { reason } }),
+    candidateInbox: () => call<T.ConversationSummary[]>('/employees/me/conversations'),
+    restaurantInbox: (restaurantId: number) => call<T.ConversationSummary[]>(`/restaurants/${restaurantId}/conversations`),
+  },
+
   notifications: {
     list: (offset = 0) => request<T.AppNotification[]>('/notifications', { query: { limit: PAGE, offset } }),
     unreadCount: () => call<{ unread: number }>('/notifications/unread-count'),

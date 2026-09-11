@@ -20,6 +20,8 @@ export const keys = {
   experience: ['profile', 'experience'] as const,
   preferences: ['profile', 'preferences'] as const,
   myDocuments: ['profile', 'documents'] as const,
+  conversations: (side: string, restaurantId: number | null) => ['conversations', side, restaurantId ?? 0] as const,
+  thread: (applicationId: number) => ['conversations', 'thread', applicationId] as const,
   applicationDocuments: (id: number) => ['applications', id, 'documents'] as const,
   feed: (params: FeedParams) => ['feed', params] as const,
   job: (id: number) => ['job', id] as const,
@@ -86,6 +88,17 @@ export function useMySkills() {
 
 export function useExperience() {
   return useQuery({ queryKey: keys.experience, queryFn: api.profile.experience });
+}
+
+/** The inbox, refreshed every 30 seconds while it is on screen — the same cadence as the unread badge. */
+export function useConversations(side: 'candidate' | 'restaurant') {
+  const { restaurantId, status } = useSession();
+  return useQuery({
+    queryKey: keys.conversations(side, side === 'restaurant' ? restaurantId : null),
+    queryFn: () => (side === 'candidate' ? api.messages.candidateInbox() : api.messages.restaurantInbox(restaurantId!)),
+    enabled: status === 'signedIn' && (side === 'candidate' || restaurantId != null),
+    refetchInterval: 30_000,
+  });
 }
 
 export function useMyDocuments() {

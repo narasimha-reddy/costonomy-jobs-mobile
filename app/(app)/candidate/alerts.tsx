@@ -1,6 +1,6 @@
 import React from 'react';
-import { NotificationList } from '@/components/app/NotificationList';
+import { Inbox } from '@/components/app/Inbox';
 
 export default function CandidateAlerts() {
-  return <NotificationList side="candidate" />;
+  return <Inbox side="candidate" />;
 }

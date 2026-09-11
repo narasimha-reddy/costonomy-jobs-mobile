@@ -24,11 +24,13 @@ const ICONS: Record<string, { icon: keyof typeof Ionicons.glyphMap; fg: string; 
   JOB: { icon: 'briefcase', fg: Colors.accent, bg: Colors.accentLight },
 };
 
+const MESSAGE_ICON = { icon: 'chatbubble-ellipses' as const, fg: Colors.accentDark, bg: Colors.accentLight };
+
 /**
  * The in-app list, shared by both sides. A tap marks the notification read and
  * opens the thing it is about — the same destination a push tap would reach.
  */
-export function NotificationList({ side }: { side: 'candidate' | 'restaurant' }) {
+export function NotificationList({ side, header }: { side: 'candidate' | 'restaurant'; header?: React.ReactNode }) {
   const { t } = useT();
   const { gutter } = useResponsive();
   const queryClient = useQueryClient();
@@ -48,6 +50,10 @@ export function NotificationList({ side }: { side: 'candidate' | 'restaurant' })
     }
     const id = n.entityId;
     if (id == null) return;
+    if (n.type === 'NEW_MESSAGE' || n.type === 'NEW_MESSAGE_FROM_CANDIDATE') {
+      router.push(`/messages/${id}`);
+      return;
+    }
     switch (n.entityType) {
       case 'APPLICATION':
         router.push(side === 'candidate' ? `/applications/${id}` : `/hiring/applications/${id}`);
@@ -71,6 +77,7 @@ export function NotificationList({ side }: { side: 'candidate' | 'restaurant' })
         keyExtractor={(n) => String(n.id)}
         contentContainerStyle={{ paddingHorizontal: gutter, paddingBottom: Spacing.section }}
         ListHeaderComponent={
+          <View>
           <LargeTitle
             title={t('alerts.title')}
             right={
@@ -83,9 +90,12 @@ export function NotificationList({ side }: { side: 'candidate' | 'restaurant' })
               ) : undefined
             }
           />
+          {header}
+          </View>
         }
         renderItem={({ item }) => {
-          const style = ICONS[item.entityType ?? 'JOB'] ?? ICONS.JOB!;
+          const isMessage = item.type === 'NEW_MESSAGE' || item.type === 'NEW_MESSAGE_FROM_CANDIDATE';
+          const style = isMessage ? MESSAGE_ICON : ICONS[item.entityType ?? 'JOB'] ?? ICONS.JOB!;
           return (
             <TouchableOpacity onPress={() => open(item)} activeOpacity={PRESS_OPACITY} style={styles.row} accessibilityRole="button">
               <View style={[styles.icon, { backgroundColor: style.bg }]}>

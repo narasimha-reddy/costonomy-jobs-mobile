@@ -72,6 +72,15 @@ export default function ApplicationDetail() {
         <Txt variant="body">{tx(`application.next.${application.status}`, '')}</Txt>
       </View>
 
+      <Button
+        label={t('messages.messageRestaurant', { restaurant: application.restaurantName ?? '' })}
+        icon="chatbubble-ellipses-outline"
+        variant="secondary"
+        fullWidth
+        onPress={() => router.push(`/messages/${applicationId}`)}
+        style={{ marginTop: Spacing.md }}
+      />
+
       {offer != null && (
         <Section title={t('offer.title')}>
           <OfferCard offer={offer} />

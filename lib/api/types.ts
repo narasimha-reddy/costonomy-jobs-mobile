@@ -420,3 +420,39 @@ export interface CandidateContact {
   name: string | null;
   mobileNumber: string;
 }
+
+// ── Messages ─────────────────────────────────────────────────────────────────
+
+export interface ChatMessage {
+  id: number;
+  body: string;
+  /** Sent by the viewer's side — for a restaurant, anyone on the team. */
+  mine: boolean;
+  senderSide: 'CANDIDATE' | 'RESTAURANT';
+  senderName: string | null;
+  createdAt: string;
+}
+
+export interface ChatThread {
+  applicationId: number;
+  jobTitle: string | null;
+  counterpartName: string | null;
+  counterpartPhotoUrl: string | null;
+  /** False once the application has ended: readable, not writable. */
+  open: boolean;
+  counterpartReadAt: string | null;
+  messages: ChatMessage[];
+  hasEarlier: boolean;
+}
+
+export interface ConversationSummary {
+  applicationId: number;
+  jobTitle: string | null;
+  counterpartName: string | null;
+  counterpartPhotoUrl: string | null;
+  lastMessagePreview: string | null;
+  lastMessageMine: boolean;
+  lastMessageAt: string;
+  unread: boolean;
+  open: boolean;
+}

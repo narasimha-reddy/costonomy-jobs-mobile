@@ -132,7 +132,10 @@ export default function RestaurantApplication() {
             </View>
           )}
         </View>
-        <Button label={t('contact.show')} icon="call-outline" variant="secondary" onPress={() => setContacting(true)} style={{ marginTop: Spacing.lg }} />
+        <View style={{ flexDirection: 'row', gap: Spacing.sm, marginTop: Spacing.lg }}>
+          <Button label={t('messages.message')} icon="chatbubble-ellipses-outline" variant="secondary" onPress={() => router.push(`/messages/${applicationId}`)} />
+          <Button label={t('contact.show')} icon="call-outline" variant="secondary" onPress={() => setContacting(true)} />
+        </View>
       </View>
 
       {c != null && (

@@ -324,8 +324,17 @@ The API URL defaults to the Expo dev host on port 8080; override with
   each Find Staff card. The number is fetched only when asked for: every reveal is
   recorded and counts toward a daily limit. Call and WhatsApp from the sheet.
 
+### Messages
+
+- The Alerts tab is now **Inbox**: *Updates* (notifications) and *Messages* (threads),
+  so the tab bar keeps its four or five destinations.
+- A thread opens from an application (either side) or the inbox. Newest at the
+  bottom, polled every 5 seconds while on screen, a "Seen" marker on your last
+  message. A failed send stays on screen with tap to retry.
+- Read-only with a lock notice once the application has ended. Report from the
+  "…" menu.
+
 ### Not built yet
 
 - **Push.** FCM needs a native build with a Firebase config; the alerts tab
   polls the unread count every 30 seconds instead.
-- **In-app chat.** Contact is a phone number until then, as the backlog specifies.
