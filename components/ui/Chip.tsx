@@ -72,17 +72,20 @@ export function Chip({
           </Text>
         </View>
       )}
-      {onRemove != null && (
-        <TouchableOpacity
-          onPress={onRemove}
-          hitSlop={Touch.hitSlop}
-          accessibilityRole="button"
-          accessibilityLabel={`Remove ${label}`}
-        >
-          <Ionicons name="close" size={15} color={fg} />
-        </TouchableOpacity>
-      )}
     </>
+  );
+
+  // A sibling of the press target, never a child: nested pressables are invalid
+  // (<button> in <button>) on web and ambiguous to screen readers everywhere.
+  const remove = onRemove != null && (
+    <TouchableOpacity
+      onPress={onRemove}
+      hitSlop={Touch.hitSlop}
+      accessibilityRole="button"
+      accessibilityLabel={`Remove ${label}`}
+    >
+      <Ionicons name="close" size={15} color={fg} />
+    </TouchableOpacity>
   );
 
   const containerStyle: StyleProp<ViewStyle> = [
@@ -96,6 +99,26 @@ export function Chip({
     return (
       <View style={containerStyle} testID={testID}>
         {body}
+        {remove}
+      </View>
+    );
+  }
+
+  if (remove) {
+    return (
+      <View style={containerStyle} testID={testID}>
+        <TouchableOpacity
+          onPress={onPress}
+          disabled={disabled}
+          activeOpacity={PRESS_OPACITY}
+          accessibilityRole="button"
+          accessibilityState={{ selected, disabled }}
+          accessibilityLabel={label}
+          style={styles.pressArea}
+        >
+          {body}
+        </TouchableOpacity>
+        {remove}
       </View>
     );
   }
@@ -133,6 +156,11 @@ const styles = StyleSheet.create({
   },
   disabled: {
     opacity: 0.4,
+  },
+  pressArea: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.xs + 2,
   },
   label: {
     fontSize: FontSize.sm,

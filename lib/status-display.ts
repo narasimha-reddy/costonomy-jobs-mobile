@@ -87,6 +87,12 @@ export const APPLICATION_STATUS_DISPLAY: Record<ApplicationStatus, StatusDisplay
     labelKey: 'employee.applicationStatus.JOINED',
     fallbackLabel: 'Joined',
   },
+  DID_NOT_JOIN: {
+    token: ApplicationStatusColors.DID_NOT_JOIN,
+    icon: 'remove-circle',
+    labelKey: 'employee.applicationStatus.DID_NOT_JOIN',
+    fallbackLabel: 'Did not join',
+  },
   REJECTED: {
     token: ApplicationStatusColors.REJECTED,
     icon: 'close-circle',
@@ -119,6 +125,7 @@ export const APPLICATION_PIPELINE: readonly ApplicationStatus[] = [
 
 export const TERMINAL_APPLICATION_STATUSES: readonly ApplicationStatus[] = [
   'JOINED',
+  'DID_NOT_JOIN',
   'REJECTED',
   'WITHDRAWN',
 ] as const;

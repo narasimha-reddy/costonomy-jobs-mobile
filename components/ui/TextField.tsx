@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/constants/colors';
+import { WEB_NO_OUTLINE } from '@/constants/platform';
 import { FontSize } from '@/constants/typography';
 import { Spacing, Touch } from '@/constants/spacing';
 import { useFontFamily } from '@/hooks/useFontFamily';
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
   },
   input: {
-    flex: 1,
+    flex: 1, ...WEB_NO_OUTLINE,
     fontSize: FontSize.md,
     color: Colors.textPrimary,
     paddingVertical: Spacing.md,

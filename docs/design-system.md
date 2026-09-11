@@ -4,7 +4,8 @@ The token and component layer for `costonomy-jobs-mobile`. Everything here is
 built to sit alongside `costonomy-mobile-app` (the Costonomy ops app) as a
 sibling, not a clone — same family, different job.
 
-**Status:** v0.1 — tokens and primitives complete, screens not yet built.
+**Status:** v0.2 — tokens, primitives and every screen for both roles built
+and verified end to end against the API (§9).
 
 ---
 
@@ -57,6 +58,7 @@ than a rainbow:
 | `JOINED` | green `#16A34A`, **solid fill** | The North Star metric. The only solid badge in the app. |
 | `REJECTED` | red `#DC2626` | Terminal, negative. |
 | `WITHDRAWN` | grey `#9CA3AF` | Terminal, *neutral* — a candidate withdrawing is not a failure and must not be coloured like one. |
+| `DID_NOT_JOIN` | amber (`warning`) | Terminal. Accepted, then didn't turn up: worth noticing, but not the restaurant's rejection, so not red. |
 
 Cool and quiet while nothing has happened → warming through the advancing middle
 → brand orange at the offer → resolving green.
@@ -204,7 +206,7 @@ All in `components/ui/`, all exported from `components/ui/index.ts`.
 | `StatusBadge` | Generic semantic pill. `label` is **required**. |
 | `ApplicationStatusBadge` &c. | Bound to the backend enums via `lib/status-display.ts`. Screens use these, not the generic badge, so colour/icon/wording are decided once. |
 | `StatusTimeline` | The `ApplicationDetail` spine. Renders upcoming steps greyed rather than hiding them — someone at SHORTLISTED needs to see the road ahead. Terminal REJECTED/WITHDRAWN **replaces** the pipeline; they are not step nine of eight. |
-| `Chip` | Filter and tag primitive. Employee `JobSearch` and restaurant `CandidateSearch` share it *and* its filter vocabulary, on purpose. |
+| `Chip` | Filter and tag primitive. Employee `JobSearch` and restaurant `CandidateSearch` share it *and* its filter vocabulary, on purpose. With both `onPress` and `onRemove`, the × is a *sibling* of the press target, never a child — nested pressables are `<button>` in `<button>` on web. |
 | `TextField` | Errors are **inline, under the field** — never a toast or a top-of-screen summary. 2px focus ring, not a hue change alone: at this saturation a hue shift is hard to see on a cheap LCD in daylight. |
 | `Avatar` | Initials fallback, not a silhouette. Photo upload is P1, so `profile_photo_url` is null for *every* user through Release 5 — a wall of identical grey silhouettes would make a hiring inbox unscannable. |
 | `EmptyState` | Must explain *why* it's empty and offer one specific next action. |
@@ -230,7 +232,77 @@ All in `components/ui/`, all exported from `components/ui/index.ts`.
   tokens are grouped so a theme layer could be added later, but no `useTheme()`
   indirection is paid for until it's actually wanted.
 - **A UI kit.** Hand-built `StyleSheet.create`, matching the ops app.
-- **A `<Text>` wrapper.** Screens compose `StyleSheet` + tokens, same as the ops
-  app, so code moves between the two repos without translation.
+- **A `<Text>` wrapper in `components/ui`.** Primitives compose `StyleSheet` +
+  tokens, same as the ops app, so code moves between the two repos without
+  translation. Screens *do* use one — `components/app/Txt` — see §9.
 - **Charts.** Admin dashboards live in `costonomy-jobs-web`. `chart1–8` exist in
   the palette for when they're needed.
+
+---
+
+## 9. Screens
+
+Two layers sit on top of the primitives:
+
+- **`components/ui/`** — the portable primitives above.
+- **`components/app/`** — app-specific composition: `Screen` (safe area, scroll,
+  sticky footer for the one CTA), `Header`/`LargeTitle`, `Sheet` (bottom sheet),
+  `Controls` (list rows, option cards, chip groups, select sheets), `Pieces`
+  (job card, tags, amount input, day and time pickers), `HiringCards`,
+  `NotificationList`, `TabBar`, `Feedback` (toast, error view) and `Txt`.
+
+**Why screens use `Txt`.** Forty screens each calling `useFontFamily()` is forty
+chances to forget one, and a forgotten one renders Hindi in the platform fallback
+face. `Txt` takes a `variant` from the type scale and picks the script-correct
+family and line height.
+
+### Route map
+
+| Group | Routes |
+|---|---|
+| `(auth)` | `welcome` (language) → `phone` → `otp` |
+| First run | `intent` (find a job / hire), `onboarding/candidate` (5 steps), `onboarding/restaurant` (2 steps) |
+| Candidate tabs | `candidate/` feed · `applications` · `alerts` · `profile` |
+| Restaurant tabs | `restaurant/` jobs · `staff` (find staff) · `interviews` · `alerts` · `business` |
+| Shared detail | `jobs/[id]`, `jobs/search`, `applications/[id]`, `interviews/[id]`, `offers/[id]`, `check-in`, `settings/*`, `profile/*` |
+| Hiring | `hiring/jobs/[id]` (pipeline), `hiring/applications/[id]`, `schedule`, `offer`, `joining`, `job-form`, `restaurant`, `outlets`, `team` |
+
+`Stack.Protected` guards `(auth)` and `(app)` on the session, so signing out, or
+a refresh token being rejected, lands on `welcome` without per-screen checks.
+
+### Data
+
+- `lib/api/` — typed client over the `{data, error, meta}` envelope. One retry
+  after a `TOKEN_EXPIRED` refresh (single-flight); any other 401 signs out.
+- `lib/session.ts` — tokens, the active role (candidate or restaurant) and
+  restaurant, in SecureStore (localStorage on web).
+- `lib/queries.ts` — React Query keys and hooks per resource. Mutations
+  invalidate by key prefix rather than patching caches by hand.
+- `lib/format.ts` — rupees with Indian grouping, and dates. The server sends UTC
+  `LocalDateTime` without an offset; `parseServerDate` is the only place that
+  knows that. Weekday and month names come from the *app* language, never the
+  device's.
+- `locales/{en,hi}.json` — `npm run lint:locales` checks the two have the same
+  keys. `MessageKey` is derived from `en.json`, so a typo'd key is a type error.
+
+### Running it
+
+```bash
+# API (dev profile seeds demo data; OTPs are written to its log)
+cd ../costonomy-jobs-api && mvn spring-boot:run -Dspring-boot.run.profiles=dev
+# App — press w for web, or scan with Expo Go on the same network
+npx expo start
+```
+
+The API URL defaults to the Expo dev host on port 8080; override with
+`EXPO_PUBLIC_API_URL`. Demo logins: owner `+919000000001`, candidate
+`+919000000101`.
+
+### Not built yet
+
+- **Push.** FCM needs a native build with a Firebase config; the alerts tab
+  polls the unread count every 30 seconds instead.
+- **Contacting a Find Staff result.** The API deliberately returns no phone
+  number and has no reveal or invite endpoint yet, so the detail sheet explains
+  the match and stops there.
+- **Photo and document upload.** P1 in the PRD.

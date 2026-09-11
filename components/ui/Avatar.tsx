@@ -34,13 +34,15 @@ export function Avatar({ uri, name, size = 'md', shape = 'circle', style }: Avat
   const dimension = SIZES[size];
   const radius = shape === 'circle' ? dimension / 2 : Spacing.radiusMd;
 
+  // Words that start with a letter or digit only — "Chai & Tiffin Co." is "CT", not "C&".
   const initials = (name ?? '')
     .trim()
     .split(/\s+/)
-    .filter(Boolean)
+    .filter((part) => /^[\p{L}\p{N}]/u.test(part))
     .slice(0, 2)
-    .map((part) => part[0]!.toUpperCase())
+    .map((part) => Array.from(part)[0]!.toUpperCase())
     .join('');
+  const tint = TINTS[hash(name ?? '') % TINTS.length]!;
 
   const base: StyleProp<ViewStyle> = [
     styles.base,
@@ -60,12 +62,12 @@ export function Avatar({ uri, name, size = 'md', shape = 'circle', style }: Avat
   }
 
   return (
-    <View style={[base, styles.fallback]} accessibilityLabel={name ?? undefined}>
+    <View style={[base, styles.fallback, initials ? { backgroundColor: tint.bg } : null]} accessibilityLabel={name ?? undefined}>
       {initials ? (
         <Text
           style={[
             styles.initials,
-            { fontSize: dimension * 0.38, fontFamily: font('semibold') },
+            { fontSize: dimension * 0.38, fontFamily: font('semibold'), color: tint.fg },
           ]}
         >
           {initials}
@@ -79,6 +81,25 @@ export function Avatar({ uri, name, size = 'md', shape = 'circle', style }: Avat
       )}
     </View>
   );
+}
+
+/**
+ * Soft tints, picked by a stable hash of the name, so a list of initials is
+ * scannable by colour as well as by letter. Same name, same colour, every time.
+ */
+const TINTS = [
+  { bg: Colors.primaryLight, fg: Colors.primaryDark },
+  { bg: Colors.accentLight, fg: Colors.accentDark },
+  { bg: '#EFF6FF', fg: '#1D4ED8' },
+  { bg: '#F5F3FF', fg: '#6D28D9' },
+  { bg: '#FFFBEB', fg: '#B45309' },
+  { bg: '#FDF2F8', fg: '#BE185D' },
+];
+
+function hash(value: string): number {
+  let h = 0;
+  for (let i = 0; i < value.length; i++) h = (h * 31 + value.charCodeAt(i)) >>> 0;
+  return h;
 }
 
 const styles = StyleSheet.create({

@@ -1,6 +1,7 @@
 import React from 'react';
 import type { StyleProp, ViewStyle } from 'react-native';
 import { StatusBadge, type StatusBadgeSize } from './StatusBadge';
+import { useT } from '@/lib/i18n';
 import {
   APPLICATION_STATUS_DISPLAY,
   CHECKIN_STATUS_DISPLAY,
@@ -36,9 +37,15 @@ interface DomainBadgeProps {
 }
 
 function render(d: StatusDisplay, props: DomainBadgeProps, solid = false) {
+  return <Localized display={d} props={props} solid={solid} />;
+}
+
+/** Resolves the label in the active language; `fallbackLabel` only if the key is missing. */
+function Localized({ display: d, props, solid }: { display: StatusDisplay; props: DomainBadgeProps; solid: boolean }) {
+  const { tx } = useT();
   return (
     <StatusBadge
-      label={props.label ?? d.fallbackLabel}
+      label={props.label ?? tx(d.labelKey, d.fallbackLabel)}
       token={d.token}
       icon={d.icon}
       size={props.size}

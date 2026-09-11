@@ -131,6 +131,8 @@ export const ApplicationStatusColors = {
   OFFERED: { fg: BRAND.primary, bg: BRAND.primaryLight },
   OFFER_ACCEPTED: { fg: '#059669', bg: '#ECFDF5' },
   JOINED: { fg: SEMANTIC.success, bg: SEMANTIC.successLight },
+  /** Accepted, then never turned up. Amber rather than red: it closes a hire, it isn't a verdict on anyone. */
+  DID_NOT_JOIN: { fg: SEMANTIC.warning, bg: SEMANTIC.warningLight },
   REJECTED: { fg: SEMANTIC.danger, bg: SEMANTIC.dangerLight },
   WITHDRAWN: MUTED_STATUS,
 } as const satisfies Record<string, StatusToken>;

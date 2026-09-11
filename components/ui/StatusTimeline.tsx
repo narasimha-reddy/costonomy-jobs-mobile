@@ -6,6 +6,7 @@ import { FontSize } from '@/constants/typography';
 import { Spacing, Touch } from '@/constants/spacing';
 import { PRESS_OPACITY } from '@/constants/motion';
 import { useFontFamily } from '@/hooks/useFontFamily';
+import { useT } from '@/lib/i18n';
 import {
   APPLICATION_PIPELINE,
   APPLICATION_STATUS_DISPLAY,
@@ -55,6 +56,7 @@ interface StatusTimelineProps {
  */
 export function StatusTimeline({ current, entries, terminalReason, style }: StatusTimelineProps) {
   const { font } = useFontFamily();
+  const { tx } = useT();
 
   if (isTerminalApplicationStatus(current) && current !== 'JOINED') {
     return <TerminalState status={current} reason={terminalReason} style={style} />;
@@ -114,7 +116,7 @@ export function StatusTimeline({ current, entries, terminalReason, style }: Stat
                     { color: labelColor, fontFamily: font(isCurrent ? 'bold' : 'medium') },
                   ]}
                 >
-                  {display.fallbackLabel}
+                  {tx(display.labelKey, display.fallbackLabel)}
                 </Text>
                 {entry?.onPress != null && (
                   <Ionicons name="chevron-forward" size={16} color={Colors.textTertiary} />
@@ -138,7 +140,7 @@ export function StatusTimeline({ current, entries, terminalReason, style }: Stat
             onPress={entry.onPress}
             activeOpacity={PRESS_OPACITY}
             accessibilityRole="button"
-            accessibilityLabel={display.fallbackLabel}
+            accessibilityLabel={tx(display.labelKey, display.fallbackLabel)}
           >
             {row}
           </TouchableOpacity>
@@ -160,6 +162,7 @@ function TerminalState({
   style?: StyleProp<ViewStyle>;
 }) {
   const { font } = useFontFamily();
+  const { tx } = useT();
   const display = APPLICATION_STATUS_DISPLAY[status];
 
   return (
@@ -167,7 +170,7 @@ function TerminalState({
       <Ionicons name={display.icon} size={22} color={display.token.fg} />
       <View style={styles.terminalText}>
         <Text style={[styles.terminalTitle, { color: display.token.fg, fontFamily: font('bold') }]}>
-          {display.fallbackLabel}
+          {tx(display.labelKey, display.fallbackLabel)}
         </Text>
         {reason != null && (
           <Text style={[styles.terminalReason, { fontFamily: font('regular') }]}>{reason}</Text>
