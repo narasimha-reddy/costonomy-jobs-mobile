@@ -33,6 +33,9 @@ the Inbox tab polls the unread count every 30 seconds.
 
 ## Before a store release
 
+- [ ] **SMS for OTP** (MSG91 + DLT templates). Until then the dev API accepts `123456`
+      for every number; unset `OTP_FIXED_CODE` when SMS is live (prod refuses to start with it)
+
 - [x] App icon, adaptive icon, splash, notification icon and favicon
 - [x] Account deletion — Settings → Delete account (`POST /users/me/delete-request`)
 - [x] Build profiles (`eas.json`: development, preview, production). A release build
