@@ -60,7 +60,7 @@ the Alerts tab polls the unread count every 30 seconds.
 ## Quality
 
 - [ ] Automated tests — today only `npm run typecheck` and `npm run lint:locales`
-- [ ] Offline state: a clear banner rather than per-screen retry
+- [x] Offline state: one app-wide banner; queries pause offline and refetch on reconnect
 
 ## Later (P1 in the backlog)
 

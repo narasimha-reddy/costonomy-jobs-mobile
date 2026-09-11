@@ -677,5 +677,7 @@
   "pipeline.share": "नौकरी शेयर करें",
   "pipeline.posted.title": "नौकरी पोस्ट हो गई",
   "pipeline.posted.body": "अपने WhatsApp ग्रुप में शेयर करें — रसोई की ज़्यादातर भर्ती जान-पहचान से होती है।",
-  "share.job": "भर्ती: {where} में {title}। {salary}। Costonomy Jobs ऐप पर अप्लाई करें।"
+  "share.job": "भर्ती: {where} में {title}। {salary}। Costonomy Jobs ऐप पर अप्लाई करें।",
+  "common.offline": "आप ऑफ़लाइन हैं",
+  "common.offlineAction": "इंटरनेट कनेक्शन नहीं है। कनेक्शन जाँचकर फिर से कोशिश करें।"
 }

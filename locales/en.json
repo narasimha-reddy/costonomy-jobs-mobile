@@ -677,5 +677,7 @@
   "pipeline.share": "Share job",
   "pipeline.posted.title": "Job posted",
   "pipeline.posted.body": "Share it in your WhatsApp groups — most kitchen hires come through people who know someone.",
-  "share.job": "Hiring: {title} at {where}. {salary}. Apply on the Costonomy Jobs app."
+  "share.job": "Hiring: {title} at {where}. {salary}. Apply on the Costonomy Jobs app.",
+  "common.offline": "You're offline",
+  "common.offlineAction": "No internet connection. Check your connection and try again."
 }

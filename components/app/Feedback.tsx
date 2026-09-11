@@ -7,7 +7,7 @@ import { Spacing, Shadows } from '@/constants/spacing';
 import { Duration } from '@/constants/motion';
 import { Button, EmptyState } from '@/components/ui';
 import { TextField } from '@/components/ui';
-import { useT } from '@/lib/i18n';
+import { translate, useT } from '@/lib/i18n';
 import { ApiError } from '@/lib/api';
 import { Sheet } from './Sheet';
 import { Txt } from './Txt';
@@ -96,7 +96,8 @@ export function ErrorView({ error, onRetry }: { error?: unknown; onRetry?: () =>
 }
 
 export function errorMessage(error: unknown, fallback: string): string {
-  return error instanceof ApiError && error.code !== 'NETWORK' && error.message ? error.message : fallback;
+  if (error instanceof ApiError && error.code === 'NETWORK') return translate('common.offlineAction');
+  return error instanceof ApiError && error.message ? error.message : fallback;
 }
 
 // ── Confirm ──────────────────────────────────────────────────────────────────

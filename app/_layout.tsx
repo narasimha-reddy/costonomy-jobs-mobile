@@ -10,6 +10,8 @@ import { APP_FONTS } from '@/lib/fonts';
 import { queryClient } from '@/lib/query';
 import { bootstrap, useSession } from '@/lib/session';
 import { ToastHost } from '@/components/app/Feedback';
+import { OfflineBanner } from '@/components/app/OfflineBanner';
+import '@/lib/network';
 import { identify, initMonitoring, wrapRoot } from '@/lib/monitoring';
 
 initMonitoring();
@@ -58,6 +60,7 @@ function RootLayout() {
             <Stack.Screen name="(app)" />
           </Stack.Protected>
         </Stack>
+        <OfflineBanner />
         <ToastHost />
       </QueryClientProvider>
     </SafeAreaProvider>
