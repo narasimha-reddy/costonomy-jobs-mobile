@@ -1,0 +1,62 @@
+# costonomy-jobs-mobile — TODO
+
+What is still open, as of 11 Sept 2026. Items are ordered within each section by
+what blocks the most.
+
+## Push notifications — waiting on Firebase setup
+
+The API side is built (`costonomy-jobs-api/docs/push-fcm.md`). Until this is done
+the Alerts tab polls the unread count every 30 seconds.
+
+**To provide:**
+- [ ] Firebase project ID
+- [ ] Android app registered with package `com.costonomy.jobs` → `google-services.json`
+- [ ] iOS app registered with bundle ID `com.costonomy.jobs` → `GoogleService-Info.plist`
+- [ ] APNs key (.p8) created in the Apple Developer account and uploaded to Firebase
+      (Project settings → Cloud Messaging), with its Key ID and Team ID
+- [ ] Service account key (JSON), role *Firebase Cloud Messaging API Admin* only;
+      *Firebase Cloud Messaging API* (V1) enabled in Google Cloud. Store outside the
+      repos; set as `FCM_SERVICE_ACCOUNT_JSON` on the server
+- [ ] Expo account signed in (`npx eas login`), and a test phone (Android is quickest)
+- [ ] Confirm `com.costonomy.jobs` as the permanent app id
+
+**Then build:**
+- [ ] `eas.json` and a development build (push does not work in Expo Go)
+- [ ] `expo-notifications` for permission and display; `@react-native-firebase/messaging`
+      for the token (iOS must send an FCM token, not the raw APNs token)
+- [ ] `POST /devices` after sign-in and on token refresh; send the token on logout
+- [ ] Route a tapped notification by `entityType` / `entityId`, same as the Alerts list
+- [ ] Ask for notification permission at a moment that explains itself (after the
+      first application or first job posted), not on first launch
+
+## Before a store release
+
+- [ ] App icon, adaptive icon, splash, notification icon and favicon — `app.json`
+      points at five files in `assets/` that do not exist yet, so a native build fails
+- [ ] Account deletion — required by both app stores. `POST /users/me/delete-request`
+      per `09-security-privacy-admin.md` §3; not built in the API or the app
+- [ ] Production API URL per build profile (`EXPO_PUBLIC_API_URL`)
+- [ ] Run on real Android and iOS phones: camera, document picker, location check-in
+      and secure storage have only been exercised on web
+- [ ] Crash reporting (Sentry, per `10-testing-cicd-seed-data.md`)
+
+## Gaps against the screen spec (`05-mobile-screens.md`) — API already supports these
+
+- [ ] Find Staff filters: area, skills/cuisine, salary range, availability; and
+      "try widening your filters" suggestions when nothing matches
+- [ ] Job search filters: minimum salary, skills
+- [ ] Skill proficiency (beginner / intermediate / expert)
+- [ ] Edit a work-history entry (only add and delete today)
+- [ ] Change a team member's role or outlets (only invite and remove today)
+- [ ] "Job posted — share it" after posting (nice to have)
+
+## Quality
+
+- [ ] Automated tests — today only `npm run typecheck` and `npm run lint:locales`
+- [ ] Offline state: a clear banner rather than per-screen retry
+
+## Later (P1 in the backlog)
+
+- In-app chat, replacing the phone-number contact
+- Repost a closed job
+- Post one vacancy to several outlets at once
