@@ -302,14 +302,15 @@ a refresh token being rejected, lands on `welcome` without per-screen checks.
 
 ```bash
 # API (dev profile seeds demo data; OTPs are written to its log)
-cd ../costonomy-jobs-api && mvn spring-boot:run -Dspring-boot.run.profiles=dev
+cd ../costonomy-jobs-api && mvn spring-boot:run -Dspring-boot.run.profiles=dev   # → :9090
 # App — press w for web, or scan with Expo Go on the same network
-npx expo start
+npm start          # dev server on :9091
 ```
 
 Checks: `npm test` (Jest), `npm run typecheck`, `npm run lint:locales`.
 
-The API URL defaults to the Expo dev host on port 8080; override with
+The API URL defaults to the Expo dev host on port 9090 (the dev server itself runs on
+9091; Costonomy Jobs uses 9xxx, the main Costonomy apps 8xxx); override with
 `EXPO_PUBLIC_API_URL`. Demo logins: owner `+919000000001`, candidate
 `+919000000101`.
 

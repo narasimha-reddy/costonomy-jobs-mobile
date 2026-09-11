@@ -2,7 +2,8 @@ import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 
 /**
- * Where the API lives.
+ * Where the API lives. Locally: the API on 9090, this app's dev server on 9091 —
+ * Costonomy Jobs uses 9xxx so it never collides with the main Costonomy apps on 8xxx.
  *
  * `EXPO_PUBLIC_API_URL` wins when set (staging, production, a tunnel). In
  * development the API runs on the same machine as Metro, so the host is taken from
@@ -24,7 +25,7 @@ function devHost(): string {
  */
 function resolveApiUrl(): string {
   const configured = process.env.EXPO_PUBLIC_API_URL;
-  if (__DEV__) return configured ?? `http://${devHost()}:8080/costonomy-jobs-api`;
+  if (__DEV__) return configured ?? `http://${devHost()}:9090/costonomy-jobs-api`;
   if (!configured) {
     throw new Error('EXPO_PUBLIC_API_URL is not set for this build. Set it in the EAS environment for this profile.');
   }
