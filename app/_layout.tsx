@@ -10,16 +10,22 @@ import { APP_FONTS } from '@/lib/fonts';
 import { queryClient } from '@/lib/query';
 import { bootstrap, useSession } from '@/lib/session';
 import { ToastHost } from '@/components/app/Feedback';
+import { identify, initMonitoring, wrapRoot } from '@/lib/monitoring';
 
+initMonitoring();
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
-export default function RootLayout() {
+function RootLayout() {
   const [fontsLoaded] = useFonts(APP_FONTS);
   const session = useSession();
 
   useEffect(() => {
     void bootstrap();
   }, []);
+
+  useEffect(() => {
+    identify(session.me?.user.id ?? null);
+  }, [session.me?.user.id]);
 
   const ready = fontsLoaded && session.status !== 'loading';
 
@@ -57,3 +63,5 @@ export default function RootLayout() {
     </SafeAreaProvider>
   );
 }
+
+export default wrapRoot(RootLayout);

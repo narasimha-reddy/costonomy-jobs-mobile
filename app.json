@@ -67,7 +67,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#FFFFFF"
         }
-      ]
+      ],
+      "@sentry/react-native"
     ],
     "extra": {
       "router": {}

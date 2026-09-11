@@ -41,7 +41,11 @@ the Alerts tab polls the unread count every 30 seconds.
       `eas env:create --environment preview|production --name EXPO_PUBLIC_API_URL`
 - [ ] Run on real Android and iOS phones: camera, document picker, location check-in
       and secure storage have only been exercised on web
-- [ ] Crash reporting (Sentry, per `10-testing-cicd-seed-data.md`)
+- [x] Crash reporting — Sentry in the app and the API, off until a DSN is set; no
+      personal data, phone numbers masked, signed-URL query strings stripped
+- [ ] **To provide:** a Sentry project for each (app, API) → `EXPO_PUBLIC_SENTRY_DSN`
+      in the EAS environments, `SENTRY_DSN` on the server; `SENTRY_AUTH_TOKEN` in EAS
+      for source-map upload
 
 ## Gaps against the screen spec (`05-mobile-screens.md`) — done
 
