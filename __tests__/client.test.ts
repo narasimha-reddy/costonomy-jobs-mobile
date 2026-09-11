@@ -53,7 +53,7 @@ describe('API client', () => {
     bindAuth({ accessToken: () => 't', refresh: async () => false, signedOut });
     replies.push({ status: 422, body: { data: null, meta: null, error: { code: 'VALIDATION_FAILED', message: 'Fix it', fieldErrors: [{ field: 'name', message: 'Too short' }] } } });
 
-    const error = await call('/users/me').catch((e) => e as ApiError);
+    const error = (await call('/users/me').catch((e: unknown) => e)) as ApiError;
     expect(error.field('name')).toBe('Too short');
     expect(signedOut).not.toHaveBeenCalled();
   });
