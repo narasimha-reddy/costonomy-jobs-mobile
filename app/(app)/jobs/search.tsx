@@ -15,8 +15,9 @@ import { JobCard } from '@/components/app/Pieces';
 import { ErrorView } from '@/components/app/Feedback';
 import { useT, type MessageKey } from '@/lib/i18n';
 import { DEFAULT_CITY_ID } from '@/lib/config';
-import { JOINING, SHIFTS } from '@/lib/options';
-import { useFeed, useLocalities, useRoles } from '@/lib/queries';
+import { JOINING, MIN_SALARIES, SHIFTS, SKILL_CATEGORY_ORDER } from '@/lib/options';
+import { useFeed, useLocalities, useRoles, useSkills } from '@/lib/queries';
+import { rupeesShort } from '@/lib/format';
 import { useFontFamily } from '@/hooks/useFontFamily';
 import type { JoiningRequirement, Shift } from '@/lib/api';
 
@@ -26,10 +27,11 @@ import type { JoiningRequirement, Shift } from '@/lib/api';
  * filter form stands between someone and the results.
  */
 export default function Search() {
-  const { t } = useT();
+  const { t, tx } = useT();
   const { font } = useFontFamily();
   const roles = useRoles().data ?? [];
   const localities = useLocalities(DEFAULT_CITY_ID).data ?? [];
+  const skills = useSkills().data ?? [];
 
   const [text, setText] = useState('');
   const [q, setQ] = useState('');
@@ -37,7 +39,9 @@ export default function Search() {
   const [localityId, setLocalityId] = useState<number | null>(null);
   const [joining, setJoining] = useState<JoiningRequirement | null>(null);
   const [shift, setShift] = useState<Shift | null>(null);
-  const [picker, setPicker] = useState<'role' | 'area' | 'joining' | 'shift' | null>(null);
+  const [minSalary, setMinSalary] = useState<number | null>(null);
+  const [skillIds, setSkillIds] = useState<number[]>([]);
+  const [picker, setPicker] = useState<'role' | 'area' | 'joining' | 'shift' | 'pay' | 'skills' | null>(null);
 
   // Debounced: a query per keystroke on mobile data is a query per wasted second.
   useEffect(() => {
@@ -53,13 +57,15 @@ export default function Search() {
       localityId: localityId ?? undefined,
       joiningRequirement: joining ?? undefined,
       shift: shift ?? undefined,
+      minSalary: minSalary ?? undefined,
+      skillIds: skillIds.length ? skillIds : undefined,
       sort: 'newest' as const,
     }),
-    [q, roleId, localityId, joining, shift],
+    [q, roleId, localityId, joining, shift, minSalary, skillIds],
   );
   const feed = useFeed(params);
   const jobs = useMemo(() => feed.data?.pages.flatMap((p) => p.data) ?? [], [feed.data]);
-  const anyFilter = roleId != null || localityId != null || joining != null || shift != null;
+  const anyFilter = roleId != null || localityId != null || joining != null || shift != null || minSalary != null || skillIds.length > 0;
 
   const roleName = roles.find((r) => r.id === roleId)?.nameDisplay;
   const areaName = localities.find((l) => l.id === localityId)?.nameDisplay;
@@ -88,6 +94,8 @@ export default function Search() {
           <Chip label={roleName ?? t('search.role')} selected={roleId != null} icon="restaurant-outline" onPress={() => setPicker('role')} onRemove={roleId != null ? () => setRoleId(null) : undefined} />
           <Chip label={areaName ?? t('search.area')} selected={localityId != null} icon="location-outline" onPress={() => setPicker('area')} onRemove={localityId != null ? () => setLocalityId(null) : undefined} />
           <Chip label={joining ? t(`joining.${joining}` as MessageKey) : t('search.joining')} selected={joining != null} icon="flash-outline" onPress={() => setPicker('joining')} onRemove={joining ? () => setJoining(null) : undefined} />
+          <Chip label={minSalary ? t('search.payFrom', { amount: rupeesShort(minSalary) }) : t('search.pay')} selected={minSalary != null} icon="cash-outline" onPress={() => setPicker('pay')} onRemove={minSalary ? () => setMinSalary(null) : undefined} />
+          <Chip label={skillIds.length ? t('search.skillsCount', { count: skillIds.length }) : t('search.skills')} selected={skillIds.length > 0} icon="sparkles-outline" onPress={() => setPicker('skills')} onRemove={skillIds.length ? () => setSkillIds([]) : undefined} />
           <Chip label={shift ? t(`shift.${shift}` as MessageKey) : t('search.shift')} selected={shift != null} icon="time-outline" onPress={() => setPicker('shift')} onRemove={shift ? () => setShift(null) : undefined} />
         </ScrollView>
       </View>
@@ -120,6 +128,8 @@ export default function Search() {
                 setLocalityId(null);
                 setJoining(null);
                 setShift(null);
+                setMinSalary(null);
+                setSkillIds([]);
               }}
             />
           )
@@ -156,6 +166,24 @@ export default function Search() {
         onChange={(v) => { setJoining(v); setPicker(null); }}
       />
       <SelectSheet
+        visible={picker === 'pay'}
+        onClose={() => setPicker(null)}
+        title={t('search.pay')}
+        searchable={false}
+        options={MIN_SALARIES.map((v) => ({ value: v, label: t('search.payFrom', { amount: rupeesShort(v) }) }))}
+        value={minSalary}
+        onChange={(v) => { setMinSalary(v); setPicker(null); }}
+      />
+      <SelectSheet
+        visible={picker === 'skills'}
+        onClose={() => setPicker(null)}
+        title={t('search.skills')}
+        multiple
+        options={sortedSkills(skills).map((s) => ({ value: s.id, label: s.nameDisplay, group: tx(`skills.category.${s.category ?? 'Other'}`, s.category ?? '') }))}
+        value={skillIds}
+        onChange={setSkillIds}
+      />
+      <SelectSheet
         visible={picker === 'shift'}
         onClose={() => setPicker(null)}
         title={t('search.shift')}
@@ -166,6 +194,12 @@ export default function Search() {
       />
     </SafeAreaView>
   );
+}
+
+/** Grouped for the picker: cuisines first, then skills, then languages. */
+function sortedSkills<S extends { category: string | null; nameDisplay: string }>(list: S[]): S[] {
+  const rank = (c: string | null) => { const i = SKILL_CATEGORY_ORDER.indexOf(c ?? ''); return i < 0 ? 99 : i; };
+  return [...list].sort((a, b) => rank(a.category) - rank(b.category) || a.nameDisplay.localeCompare(b.nameDisplay));
 }
 
 const styles = StyleSheet.create({

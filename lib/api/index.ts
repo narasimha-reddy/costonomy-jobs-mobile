@@ -47,12 +47,15 @@ export const api = {
     get: () => call<T.Profile>('/employees/me'),
     update: (body: T.ProfileUpdate) => call<T.Profile>('/employees/me', { method: 'PUT', body }),
     skills: () => call<T.MySkill[]>('/employees/me/skills'),
-    addSkill: (skillId: number) =>
-      call<T.MySkill[]>('/employees/me/skills', { method: 'POST', body: { skillId } }),
+    /** Adds a skill, or sets its level — the endpoint upserts. */
+    addSkill: (skillId: number, proficiency?: T.Proficiency | null) =>
+      call<T.MySkill[]>('/employees/me/skills', { method: 'POST', body: { skillId, proficiency: proficiency ?? null } }),
     removeSkill: (skillId: number) => call<void>(`/employees/me/skills/${skillId}`, { method: 'DELETE' }),
     experience: () => call<T.Experience[]>('/employees/me/experience'),
     addExperience: (body: T.ExperienceInput) =>
       call<T.Experience>('/employees/me/experience', { method: 'POST', body }),
+    updateExperience: (id: number, body: T.ExperienceInput) =>
+      call<T.Experience>(`/employees/me/experience/${id}`, { method: 'PUT', body }),
     deleteExperience: (id: number) => call<void>(`/employees/me/experience/${id}`, { method: 'DELETE' }),
     photoUpload: (contentType: string, sizeBytes: number) =>
       call<T.UploadTicket>('/employees/me/photo/uploads', { method: 'POST', body: { contentType, sizeBytes } }),
@@ -164,10 +167,13 @@ export const api = {
     team: (id: number) => call<T.TeamMember[]>(`/restaurants/${id}/users`),
     invite: (id: number, body: { mobileNumber: string; name?: string | null; role: string; outletIds?: number[] }) =>
       call<T.TeamMember>(`/restaurants/${id}/users`, { method: 'POST', body }),
+    updateMember: (id: number, restaurantUserId: number, body: { role: string; outletIds: number[] }) =>
+      call<T.TeamMember>(`/restaurants/${id}/users/${restaurantUserId}`, { method: 'PUT', body }),
     removeMember: (id: number, restaurantUserId: number) =>
       call<void>(`/restaurants/${id}/users/${restaurantUserId}`, { method: 'DELETE' }),
     candidates: (id: number, query: {
-      jobId?: number; cityId?: number; roleId?: number; minExperienceMonths?: number; availability?: string;
+      jobId?: number; cityId?: number; localityId?: number; roleId?: number; minExperienceMonths?: number;
+      maxExpectedSalary?: number; availability?: string; skillIds?: number[];
     }, offset = 0) => request<T.CandidateResult[]>(`/restaurants/${id}/candidates`, { query: { ...query, limit: PAGE, offset } }),
   },
 

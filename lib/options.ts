@@ -20,6 +20,18 @@ export const AVAILABILITIES: Availability[] = ['IMMEDIATE', 'WITHIN_15_DAYS', 'W
 export const JOINING: JoiningRequirement[] = ['IMMEDIATE', 'WITHIN_15_DAYS', 'WITHIN_30_DAYS', 'FLEXIBLE'];
 export const SHIFTS: Shift[] = ['MORNING', 'AFTERNOON', 'EVENING', 'NIGHT', 'FLEXIBLE'];
 
+/** "Pays at least" choices for job search, monthly rupees. */
+export const MIN_SALARIES = [12000, 15000, 18000, 22000, 26000, 32000];
+
+/** "Expects at most" choices for Find Staff, monthly rupees. */
+export const MAX_EXPECTED_SALARIES = [15000, 20000, 25000, 30000, 40000];
+
+/** Availabilities a restaurant can filter on — someone NOT_LOOKING never appears. */
+export const LOOKING: Availability[] = ['IMMEDIATE', 'WITHIN_15_DAYS', 'WITHIN_30_DAYS'];
+
+/** Skill categories in the order people look for them. */
+export const SKILL_CATEGORY_ORDER = ['Cuisine', 'Technical', 'Language'];
+
 /** Minimum-experience choices, in months. */
 export const EXPERIENCE_MINIMUMS = [0, 6, 12, 24, 36, 60];
 

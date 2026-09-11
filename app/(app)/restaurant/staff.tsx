@@ -14,12 +14,17 @@ import { Sheet } from '@/components/app/Sheet';
 import { ErrorView } from '@/components/app/Feedback';
 import { ContactSheet } from '@/components/app/ContactSheet';
 import { useT, type MessageKey } from '@/lib/i18n';
-import { api, type CandidateResult } from '@/lib/api';
-import { experience, rupees } from '@/lib/format';
-import { EXPERIENCE_MINIMUMS } from '@/lib/options';
-import { keys, useOutlets, useRestaurantJobs, useRoles } from '@/lib/queries';
+import { api, type Availability, type CandidateResult } from '@/lib/api';
+import { experience, rupees, rupeesShort } from '@/lib/format';
+import { EXPERIENCE_MINIMUMS, LOOKING, MAX_EXPECTED_SALARIES, SKILL_CATEGORY_ORDER } from '@/lib/options';
+import { keys, useLocalities, useOutlets, useRestaurantJobs, useRoles, useSkills } from '@/lib/queries';
 import { useSession } from '@/lib/session';
 import { useResponsive } from '@/hooks/useResponsive';
+
+const rank = (category: string | null) => {
+  const i = SKILL_CATEGORY_ORDER.indexOf(category ?? '');
+  return i < 0 ? 99 : i;
+};
 
 const SIGNALS = ['role', 'location', 'experience', 'salary', 'availability', 'cuisine', 'skills'];
 
@@ -30,7 +35,7 @@ const SIGNALS = ['role', 'location', 'experience', 'salary', 'availability', 'cu
  * No phone number and no distance on any card — see SearchDtos.CandidateResult.
  */
 export default function FindStaff() {
-  const { t } = useT();
+  const { t, tx } = useT();
   const { gutter } = useResponsive();
   const { restaurantId } = useSession();
   const outlets = useOutlets(restaurantId).data ?? [];
@@ -40,7 +45,12 @@ export default function FindStaff() {
   const [jobId, setJobId] = useState<number | null>(null);
   const [roleId, setRoleId] = useState<number | null>(null);
   const [minExp, setMinExp] = useState<number | null>(null);
-  const [picker, setPicker] = useState<'job' | 'role' | 'exp' | null>(null);
+  const [localityId, setLocalityId] = useState<number | null>(null);
+  const [maxSalary, setMaxSalary] = useState<number | null>(null);
+  const [availability, setAvailability] = useState<Availability | null>(null);
+  const [skillIds, setSkillIds] = useState<number[]>([]);
+  const [picker, setPicker] = useState<'job' | 'role' | 'exp' | 'area' | 'pay' | 'join' | 'skills' | null>(null);
+  const skills = useSkills().data ?? [];
   const [selected, setSelected] = useState<CandidateResult | null>(null);
   const [contactFor, setContactFor] = useState<CandidateResult | null>(null);
 
@@ -58,8 +68,17 @@ export default function FindStaff() {
   const cityId = outlets[0]?.cityId;
   const ranked = jobId != null || roleId != null;
   const params = useMemo(
-    () => ({ jobId: jobId ?? undefined, cityId: jobId ? undefined : cityId, roleId: roleId ?? undefined, minExperienceMonths: minExp ?? undefined }),
-    [jobId, cityId, roleId, minExp],
+    () => ({
+      jobId: jobId ?? undefined,
+      cityId: jobId ? undefined : cityId,
+      roleId: roleId ?? undefined,
+      minExperienceMonths: minExp ?? undefined,
+      localityId: localityId ?? undefined,
+      maxExpectedSalary: maxSalary ?? undefined,
+      availability: availability ?? undefined,
+      skillIds: skillIds.length ? skillIds : undefined,
+    }),
+    [jobId, cityId, roleId, minExp, localityId, maxSalary, availability, skillIds],
   );
 
   const query = useInfiniteQuery({
@@ -73,6 +92,29 @@ export default function FindStaff() {
 
   const job = jobs.find((j) => j.id === jobId);
   const role = roles.find((r) => r.id === roleId);
+  const localities = useLocalities(job?.cityId ?? cityId).data ?? [];
+  const area = localities.find((l) => l.id === localityId);
+
+  // "No candidates match yet; try widening your filters", as one tap each: every
+  // active filter offers the next step looser, not only "remove".
+  const widen: { key: string; label: string; apply: () => void }[] = [];
+  if (minExp != null) {
+    const lower = [...EXPERIENCE_MINIMUMS].reverse().find((m) => m < minExp && m > 0);
+    widen.push(lower != null
+      ? { key: 'exp', label: t('staff.widen.experience', { value: experience(lower) }), apply: () => setMinExp(lower) }
+      : { key: 'exp', label: t('staff.widen.anyExperience'), apply: () => setMinExp(null) });
+  }
+  if (maxSalary != null) {
+    const higher = MAX_EXPECTED_SALARIES.find((v) => v > maxSalary);
+    widen.push(higher != null
+      ? { key: 'pay', label: t('staff.payUpTo', { amount: rupeesShort(higher) }), apply: () => setMaxSalary(higher) }
+      : { key: 'pay', label: t('staff.widen.anyPay'), apply: () => setMaxSalary(null) });
+  }
+  if (localityId != null) widen.push({ key: 'area', label: t('staff.widen.anyArea'), apply: () => setLocalityId(null) });
+  if (availability != null) widen.push({ key: 'join', label: t('staff.widen.anyJoining'), apply: () => setAvailability(null) });
+  if (skillIds.length) widen.push({ key: 'skills', label: t('staff.widen.anySkills'), apply: () => setSkillIds([]) });
+  if (roleId != null) widen.push({ key: 'role', label: t('staff.widen.anyRole'), apply: () => setRoleId(null) });
+  if (jobId != null && widen.length === 0) widen.push({ key: 'job', label: t('staff.widen.withoutJob'), apply: () => { setJobId(null); setDefaulted(true); } });
 
   return (
     <SafeAreaView edges={['top']} style={styles.fill}>
@@ -93,6 +135,10 @@ export default function FindStaff() {
                 onPress={() => setPicker('exp')}
                 onRemove={minExp != null ? () => setMinExp(null) : undefined}
               />
+              <Chip label={area?.nameDisplay ?? t('staff.area')} icon="location-outline" selected={localityId != null} onPress={() => setPicker('area')} onRemove={localityId != null ? () => setLocalityId(null) : undefined} />
+              <Chip label={maxSalary != null ? t('staff.payUpTo', { amount: rupeesShort(maxSalary) }) : t('staff.pay')} icon="cash-outline" selected={maxSalary != null} onPress={() => setPicker('pay')} onRemove={maxSalary != null ? () => setMaxSalary(null) : undefined} />
+              <Chip label={availability ? t(`availability.${availability}` as MessageKey) : t('staff.canJoin')} icon="flash-outline" selected={availability != null} onPress={() => setPicker('join')} onRemove={availability ? () => setAvailability(null) : undefined} />
+              <Chip label={skillIds.length ? t('search.skillsCount', { count: skillIds.length }) : t('search.skills')} icon="sparkles-outline" selected={skillIds.length > 0} onPress={() => setPicker('skills')} onRemove={skillIds.length ? () => setSkillIds([]) : undefined} />
             </ScrollView>
           </View>
         }
@@ -105,7 +151,16 @@ export default function FindStaff() {
           ) : query.isError ? (
             <ErrorView error={query.error} onRetry={() => query.refetch()} />
           ) : (
-            <EmptyState icon="people-outline" title={t('staff.empty.title')} subtitle={t('staff.empty.body')} />
+            <View>
+              <EmptyState icon="people-outline" title={t('staff.empty.title')} subtitle={widen.length ? t('staff.empty.widen') : t('staff.empty.body')} />
+              {widen.length > 0 && (
+                <View style={styles.widen}>
+                  {widen.map((w) => (
+                    <Chip key={w.key} label={w.label} icon="expand-outline" onPress={w.apply} />
+                  ))}
+                </View>
+              )}
+            </View>
           )
         }
         onEndReached={() => query.hasNextPage && !query.isFetchingNextPage && query.fetchNextPage()}
@@ -139,6 +194,44 @@ export default function FindStaff() {
         options={EXPERIENCE_MINIMUMS.filter((m) => m > 0).map((m) => ({ value: m, label: t('format.minExperience', { value: experience(m) }) }))}
         value={minExp}
         onChange={(v) => { setMinExp(v); setPicker(null); }}
+      />
+
+      <SelectSheet
+        visible={picker === 'area'}
+        onClose={() => setPicker(null)}
+        title={t('staff.area')}
+        options={localities.map((l) => ({ value: l.id, label: l.nameDisplay }))}
+        value={localityId}
+        onChange={(v) => { setLocalityId(v); setPicker(null); }}
+      />
+      <SelectSheet
+        visible={picker === 'pay'}
+        onClose={() => setPicker(null)}
+        title={t('staff.pay')}
+        searchable={false}
+        options={MAX_EXPECTED_SALARIES.map((v) => ({ value: v, label: t('staff.payUpTo', { amount: rupeesShort(v) }) }))}
+        value={maxSalary}
+        onChange={(v) => { setMaxSalary(v); setPicker(null); }}
+      />
+      <SelectSheet
+        visible={picker === 'join'}
+        onClose={() => setPicker(null)}
+        title={t('staff.canJoin')}
+        searchable={false}
+        options={LOOKING.map((a) => ({ value: a, label: t(`availability.${a}` as MessageKey) }))}
+        value={availability}
+        onChange={(v) => { setAvailability(v); setPicker(null); }}
+      />
+      <SelectSheet
+        visible={picker === 'skills'}
+        onClose={() => setPicker(null)}
+        title={t('search.skills')}
+        multiple
+        options={[...skills]
+          .sort((a, b) => rank(a.category) - rank(b.category) || a.nameDisplay.localeCompare(b.nameDisplay))
+          .map((s) => ({ value: s.id, label: s.nameDisplay, group: tx(`skills.category.${s.category ?? 'Other'}`, s.category ?? '') }))}
+        value={skillIds}
+        onChange={setSkillIds}
       />
 
       <Sheet
@@ -278,5 +371,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.accentLight,
   },
   ring: { width: 46, height: 46, borderRadius: 23, borderWidth: 3, alignItems: 'center', justifyContent: 'center' },
+  widen: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: Spacing.sm, marginTop: -Spacing.xxl },
   hint: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, borderRadius: Spacing.radiusMd, backgroundColor: Colors.background },
 });

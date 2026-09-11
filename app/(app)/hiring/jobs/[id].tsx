@@ -19,6 +19,8 @@ import { experience, relativeTime, rupees, salaryRange } from '@/lib/format';
 import { keys, useJob, useJobApplications, useRoleName } from '@/lib/queries';
 import { useSession } from '@/lib/session';
 import { useResponsive } from '@/hooks/useResponsive';
+import { shareJob } from '@/lib/share';
+import { Button } from '@/components/ui';
 
 type Stage = 'new' | 'shortlisted' | 'interview' | 'offer' | 'hired' | 'closed';
 
@@ -37,8 +39,9 @@ const STAGES: { key: Stage; statuses: ApplicationStatusCode[] }[] = [
  */
 export default function JobPipeline() {
   const { t } = useT();
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, posted } = useLocalSearchParams<{ id: string; posted?: string }>();
   const jobId = Number(id);
+  const [justPosted, setJustPosted] = useState(posted === '1');
   const { gutter } = useResponsive();
   const { restaurantId } = useSession();
   const queryClient = useQueryClient();
@@ -86,6 +89,21 @@ export default function JobPipeline() {
           ListHeaderComponent={
             j ? (
               <View>
+                {justPosted && j.status === 'OPEN' && (
+                  <View style={styles.posted}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: Spacing.sm }}>
+                      <Ionicons name="checkmark-circle" size={22} color={Colors.success} />
+                      <Txt variant="subheading" style={{ flex: 1 }}>
+                        {t('pipeline.posted.title')}
+                      </Txt>
+                      <IconButton icon="close" label={t('common.close')} color={Colors.textSecondary} onPress={() => setJustPosted(false)} />
+                    </View>
+                    <Txt variant="body" color={Colors.textSecondary}>
+                      {t('pipeline.posted.body')}
+                    </Txt>
+                    <Button label={t('pipeline.share')} icon="share-social-outline" variant="secondary" onPress={() => void shareJob(j)} style={{ alignSelf: 'flex-start', marginTop: Spacing.sm }} />
+                  </View>
+                )}
                 <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: Spacing.md }}>
                   <View style={{ flex: 1 }}>
                     <Txt variant="display">{j.title}</Txt>
@@ -142,6 +160,7 @@ export default function JobPipeline() {
 
       <Sheet visible={menu} onClose={() => setMenu(false)} title={j?.title}>
         <ListGroup>
+          {j?.status === 'OPEN' && <ListRow icon="share-social-outline" title={t('pipeline.share')} onPress={() => { setMenu(false); void shareJob(j); }} />}
           <ListRow icon="create-outline" title={t('pipeline.edit')} onPress={() => { setMenu(false); router.push({ pathname: '/hiring/job-form', params: { id: String(jobId) } }); }} />
           {j?.status === 'DRAFT' && <ListRow icon="rocket-outline" iconColor={Colors.success} title={t('pipeline.publish')} onPress={() => transition('publish')} />}
           {j?.status === 'OPEN' && <ListRow icon="pause-circle-outline" title={t('pipeline.pause')} onPress={() => transition('pause')} />}
@@ -203,6 +222,7 @@ function CandidateRow({ application: a }: { application: Application }) {
 }
 
 const styles = StyleSheet.create({
+  posted: { gap: Spacing.xs, padding: Spacing.lg, marginBottom: Spacing.lg, borderRadius: Spacing.radiusLg, backgroundColor: Colors.successLight },
   fill: { flex: 1, backgroundColor: Colors.background },
   stages: { gap: Spacing.sm, paddingVertical: Spacing.xl },
   stage: {

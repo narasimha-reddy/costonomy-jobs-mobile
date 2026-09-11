@@ -115,7 +115,7 @@ export default function JobForm() {
       void queryClient.invalidateQueries({ queryKey: keys.job(job.id) });
       toast(editing ? t('jobForm.saved') : publish ? t('jobForm.posted') : t('jobForm.saved'));
       if (editing) router.back();
-      else router.replace(`/hiring/jobs/${job.id}`);
+      else router.replace({ pathname: '/hiring/jobs/[id]', params: { id: String(job.id), ...(publish ? { posted: '1' } : {}) } });
     } catch (e) {
       setError(errorMessage(e, t('common.errorBody')));
     } finally {

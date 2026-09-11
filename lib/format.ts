@@ -99,6 +99,13 @@ export function dayParts(date: Date): { weekday: string; month: string } {
   };
 }
 
+/** "Mar 2024" from a server date like "2024-03-01" — read as text, so no timezone can shift the month. */
+export function monthYear(isoDate: string | null | undefined): string {
+  if (!isoDate) return '';
+  const date = new Date(Number(isoDate.slice(0, 4)), Number(isoDate.slice(5, 7)) - 1, 1);
+  return date.toLocaleDateString(intlLocale(), { month: 'short', year: 'numeric' });
+}
+
 export function shortDate(date: Date): string {
   return date.toLocaleDateString(intlLocale(), { day: 'numeric', month: 'short', year: 'numeric' });
 }

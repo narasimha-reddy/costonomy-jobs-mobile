@@ -17,7 +17,7 @@ import { EditableAvatar } from '@/components/app/Media';
 import { MyDocuments } from '@/components/app/MyDocuments';
 import { useT, type MessageKey } from '@/lib/i18n';
 import { api } from '@/lib/api';
-import { experience, formatMobile, rupees } from '@/lib/format';
+import { experience, formatMobile, monthYear, rupees } from '@/lib/format';
 import { upload } from '@/lib/media';
 import { keys, useExperience, useMySkills, useProfile } from '@/lib/queries';
 import { setRole, useSession } from '@/lib/session';
@@ -136,7 +136,7 @@ export default function Profile() {
               key={h.id}
               icon="business-outline"
               title={`${h.roleDisplay} · ${h.restaurantName ?? ''}`}
-              subtitle={`${h.startDate.slice(0, 7)} – ${h.current ? t('workHistory.present') : (h.endDate ?? '').slice(0, 7)}`}
+              subtitle={`${monthYear(h.startDate)} – ${h.current ? t('workHistory.present') : monthYear(h.endDate)}`}
             />
           ))}
           <ListRow icon="add" iconColor={Colors.primary} title={t('workHistory.add')} onPress={() => router.push('/profile/experience')} />

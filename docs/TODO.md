@@ -39,15 +39,15 @@ the Alerts tab polls the unread count every 30 seconds.
       and secure storage have only been exercised on web
 - [ ] Crash reporting (Sentry, per `10-testing-cicd-seed-data.md`)
 
-## Gaps against the screen spec (`05-mobile-screens.md`) — API already supports these
+## Gaps against the screen spec (`05-mobile-screens.md`) — done
 
-- [ ] Find Staff filters: area, skills/cuisine, salary range, availability; and
-      "try widening your filters" suggestions when nothing matches
-- [ ] Job search filters: minimum salary, skills
-- [ ] Skill proficiency (beginner / intermediate / expert)
-- [ ] Edit a work-history entry (only add and delete today)
-- [ ] Change a team member's role or outlets (only invite and remove today)
-- [ ] "Job posted — share it" after posting (nice to have)
+- [x] Find Staff filters: area, skills/cuisine, expected pay, joining time; one-tap
+      "widen your search" suggestions when nothing matches
+- [x] Job search filters: pay, skills
+- [x] Skill level (learning / good / expert)
+- [x] Edit a work-history entry, with an optional description
+- [x] Change a team member's role or outlets (ownership only by an owner)
+- [x] "Job posted — share it" after posting, and Share in the job menu
 
 ## Quality
 

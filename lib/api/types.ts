@@ -103,13 +103,15 @@ export interface ProfileUpdate {
   profileVisibility?: string | null;
 }
 
+export type Proficiency = 'BEGINNER' | 'INTERMEDIATE' | 'EXPERT';
+
 export interface MySkill {
   skillId: number;
   name: string;
   nameDisplay: string;
   category: string | null;
   experienceMonths: number | null;
-  proficiency: string | null;
+  proficiency: Proficiency | null;
 }
 
 export interface Experience {
@@ -210,6 +212,7 @@ export interface FeedParams {
   minSalary?: number;
   joiningRequirement?: JoiningRequirement;
   shift?: Shift;
+  skillIds?: number[];
   q?: string;
   sort?: 'newest' | 'relevance';
 }
