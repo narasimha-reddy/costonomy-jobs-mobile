@@ -10,11 +10,14 @@ import { Header } from '@/components/app/Header';
 import { Txt } from '@/components/app/Txt';
 import { Section, Tiles } from '@/components/app/Controls';
 import { InterviewCard, OfferCard } from '@/components/app/HiringCards';
+import { ContactSheet } from '@/components/app/ContactSheet';
+import { DocumentRow, openDocument } from '@/components/app/Media';
 import { ConfirmSheet, ErrorView, Loading, errorMessage, toast } from '@/components/app/Feedback';
 import { useT, type MessageKey } from '@/lib/i18n';
 import { api } from '@/lib/api';
 import { dateTimeLabel, experience, rupees } from '@/lib/format';
-import { keys, useApplicationInterviews, useApplicationOffer, useRestaurantApplication, useRoleName } from '@/lib/queries';
+import { keys, useApplicationDocuments, useApplicationInterviews, useApplicationOffer, useRestaurantApplication, useRoleName } from '@/lib/queries';
+import { useSession } from '@/lib/session';
 import type { ApplicationStatus } from '@/constants/colors';
 
 /**
@@ -32,7 +35,10 @@ export default function RestaurantApplication() {
   const a = query.data;
   const interviews = useApplicationInterviews(applicationId, a != null && a.timeline.some((e) => e.status === 'INTERVIEW'));
   const offer = useApplicationOffer(applicationId, a != null && a.timeline.some((e) => e.status === 'SELECTED'));
+  const { restaurantId } = useSession();
+  const documents = useApplicationDocuments(applicationId);
   const [rejecting, setRejecting] = useState(false);
+  const [contacting, setContacting] = useState(false);
   const [busy, setBusy] = useState(false);
 
   if (query.isLoading) return <Loading />;
@@ -109,7 +115,7 @@ export default function RestaurantApplication() {
       ) : undefined}
     >
       <View style={styles.hero}>
-        <Avatar name={a.candidateName} size="xl" />
+        <Avatar name={a.candidateName} uri={a.candidate?.profilePhotoUrl} size="xl" />
         <Txt variant="title" style={{ marginTop: Spacing.md }} align="center">
           {a.candidateName}
         </Txt>
@@ -126,6 +132,7 @@ export default function RestaurantApplication() {
             </View>
           )}
         </View>
+        <Button label={t('contact.show')} icon="call-outline" variant="secondary" onPress={() => setContacting(true)} style={{ marginTop: Spacing.lg }} />
       </View>
 
       {c != null && (
@@ -151,6 +158,22 @@ export default function RestaurantApplication() {
         </Section>
       ) : null}
 
+      <Section title={t('documents.title')}>
+        {documents.data?.length ? (
+          <View style={[styles.panel, { padding: 0 }]}>
+            {documents.data.map((d, i) => (
+              <View key={d.id} style={i > 0 ? styles.divider : undefined}>
+                <DocumentRow document={d} onPress={() => openDocument(d.url)} />
+              </View>
+            ))}
+          </View>
+        ) : (
+          <Txt variant="body" color={Colors.textTertiary}>
+            {documents.isLoading ? ' ' : t('documents.noneFromCandidate')}
+          </Txt>
+        )}
+      </Section>
+
       {offer.data != null && (
         <Section title={t('offer.title')}>
           <OfferCard offer={offer.data} />
@@ -168,6 +191,14 @@ export default function RestaurantApplication() {
           <StatusTimeline current={a.status} entries={entries} />
         </View>
       </Section>
+
+      <ContactSheet
+        visible={contacting}
+        onClose={() => setContacting(false)}
+        restaurantId={restaurantId}
+        employeeId={a.employeeId}
+        name={a.candidateName}
+      />
 
       <ConfirmSheet
         visible={rejecting}
@@ -195,6 +226,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.borderLight,
   },
+  divider: { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: Colors.border },
   match: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: Spacing.radiusFull, backgroundColor: Colors.accentLight },
   panel: {
     padding: Spacing.lg,

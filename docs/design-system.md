@@ -208,7 +208,7 @@ All in `components/ui/`, all exported from `components/ui/index.ts`.
 | `StatusTimeline` | The `ApplicationDetail` spine. Renders upcoming steps greyed rather than hiding them — someone at SHORTLISTED needs to see the road ahead. Terminal REJECTED/WITHDRAWN **replaces** the pipeline; they are not step nine of eight. |
 | `Chip` | Filter and tag primitive. Employee `JobSearch` and restaurant `CandidateSearch` share it *and* its filter vocabulary, on purpose. With both `onPress` and `onRemove`, the × is a *sibling* of the press target, never a child — nested pressables are `<button>` in `<button>` on web. |
 | `TextField` | Errors are **inline, under the field** — never a toast or a top-of-screen summary. 2px focus ring, not a hue change alone: at this saturation a hue shift is hard to see on a cheap LCD in daylight. |
-| `Avatar` | Initials fallback, not a silhouette. Photo upload is P1, so `profile_photo_url` is null for *every* user through Release 5 — a wall of identical grey silhouettes would make a hiring inbox unscannable. |
+| `Avatar` | Initials fallback, not a silhouette — most people never add a photo, and a wall of identical grey silhouettes would make a hiring inbox unscannable. A photo that fails to load (an expired signed URL) falls back to the same initials. |
 | `EmptyState` | Must explain *why* it's empty and offer one specific next action. |
 | `Skeleton` / `SkeletonCard` / `SkeletonList` | The loading primitive. |
 | `ProgressBar` | Profile completion. Amber below `threshold`, teal above, green at 100 — deliberately **not red**: an incomplete profile is a to-do, not an error (PRD Appendix B). |
@@ -249,7 +249,16 @@ Two layers sit on top of the primitives:
   sticky footer for the one CTA), `Header`/`LargeTitle`, `Sheet` (bottom sheet),
   `Controls` (list rows, option cards, chip groups, select sheets), `Pieces`
   (job card, tags, amount input, day and time pickers), `HiringCards`,
-  `NotificationList`, `TabBar`, `Feedback` (toast, error view) and `Txt`.
+  `NotificationList`, `TabBar`, `Feedback` (toast, error view), `Media`
+  (`EditableAvatar`, `DocumentRow`), `MyDocuments`, `ContactSheet` and `Txt`.
+
+**Action sheets use `ListRow`s, not `OptionCard`s.** An option card has a radio and
+means "pick one"; a menu of actions (take a photo, remove) is a list.
+
+**Never nest pressables.** A button inside a button is invalid HTML on web and
+ambiguous to screen readers. Where a row has its own trailing action (a document's
+"…", a Find Staff card's Contact), the action is a sibling of the row's press
+target.
 
 **Why screens use `Txt`.** Forty screens each calling `useFontFamily()` is forty
 chances to forget one, and a forgotten one renders Hindi in the platform fallback
@@ -278,6 +287,10 @@ a refresh token being rejected, lands on `welcome` without per-screen checks.
   restaurant, in SecureStore (localStorage on web).
 - `lib/queries.ts` — React Query keys and hooks per resource. Mutations
   invalidate by key prefix rather than patching caches by hand.
+- `lib/media.ts` — picking and uploading. Photos are cropped square, resized to
+  720px and re-encoded as JPEG on the phone (a 4 MB camera photo becomes ~150 KB,
+  and HEIC becomes something the API accepts). `upload()` asks the API for a signed
+  URL, PUTs the file straight to storage, and returns the token that attaches it.
 - `lib/format.ts` — rupees with Indian grouping, and dates. The server sends UTC
   `LocalDateTime` without an offset; `parseServerDate` is the only place that
   knows that. Weekday and month names come from the *app* language, never the
@@ -298,11 +311,19 @@ The API URL defaults to the Expo dev host on port 8080; override with
 `EXPO_PUBLIC_API_URL`. Demo logins: owner `+919000000001`, candidate
 `+919000000101`.
 
+### Photos, documents and contact
+
+- **Profile photo** — tap the avatar on Profile: camera, gallery, or remove.
+- **Restaurant logo** — tap the logo on the Restaurant tab (owners and admins).
+- **Resume and certificates** — Profile → *Resume & certificates*. One resume
+  (a new one replaces it), any number of certificates, each named. Shared only with
+  restaurants the candidate applies to; shown on the restaurant's candidate screen.
+- **Contact** — *Show phone number* on a candidate's application, and *Contact* on
+  each Find Staff card. The number is fetched only when asked for: every reveal is
+  recorded and counts toward a daily limit. Call and WhatsApp from the sheet.
+
 ### Not built yet
 
 - **Push.** FCM needs a native build with a Firebase config; the alerts tab
   polls the unread count every 30 seconds instead.
-- **Contacting a Find Staff result.** The API deliberately returns no phone
-  number and has no reveal or invite endpoint yet, so the detail sheet explains
-  the match and stops there.
-- **Photo and document upload.** P1 in the PRD.
+- **In-app chat.** Contact is a phone number until then, as the backlog specifies.

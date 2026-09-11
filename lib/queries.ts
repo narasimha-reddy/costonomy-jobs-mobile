@@ -19,6 +19,8 @@ export const keys = {
   mySkills: ['profile', 'skills'] as const,
   experience: ['profile', 'experience'] as const,
   preferences: ['profile', 'preferences'] as const,
+  myDocuments: ['profile', 'documents'] as const,
+  applicationDocuments: (id: number) => ['applications', id, 'documents'] as const,
   feed: (params: FeedParams) => ['feed', params] as const,
   job: (id: number) => ['job', id] as const,
   myApplications: ['applications', 'mine'] as const,
@@ -84,6 +86,24 @@ export function useMySkills() {
 
 export function useExperience() {
   return useQuery({ queryKey: keys.experience, queryFn: api.profile.experience });
+}
+
+export function useMyDocuments() {
+  return useQuery({ queryKey: keys.myDocuments, queryFn: api.profile.documents });
+}
+
+/**
+ * Document URLs are signed for fifteen minutes, so this refetches on focus and
+ * treats ten minutes as stale: a link opened from a screen left open over lunch
+ * would otherwise be dead.
+ */
+export function useApplicationDocuments(applicationId: number) {
+  return useQuery({
+    queryKey: keys.applicationDocuments(applicationId),
+    queryFn: () => api.applications.documents(applicationId),
+    enabled: applicationId > 0,
+    staleTime: 10 * 60 * 1000,
+  });
 }
 
 export function usePreferences() {

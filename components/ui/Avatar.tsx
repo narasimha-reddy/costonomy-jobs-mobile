@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/constants/colors';
@@ -23,11 +23,12 @@ const SIZES: Record<AvatarSize, number> = { sm: 32, md: 44, lg: 64, xl: 88 };
 /**
  * Initials, not a generic silhouette, are the fallback.
  *
- * Photo upload is P1 (11-implementation-backlog Epic 6.4) — `profile_photo_url`
- * is null for **every** user through Release 5. So the fallback isn't an edge
- * case here, it is the default rendering of every candidate in every list, and
- * a wall of identical grey silhouettes would make a hiring inbox unscannable.
- * Initials at least differentiate rows.
+ * Most people never add a photo, so the fallback isn't an edge case — it is how
+ * most candidates render in most lists, and a wall of identical grey silhouettes
+ * would make a hiring inbox unscannable. Initials at least differentiate rows.
+ *
+ * A photo that fails to load (a signed URL that has expired, a file since
+ * replaced) falls back to the same initials rather than an empty box.
  */
 export function Avatar({ uri, name, size = 'md', shape = 'circle', style }: AvatarProps) {
   const { font } = useFontFamily();
@@ -50,13 +51,16 @@ export function Avatar({ uri, name, size = 'md', shape = 'circle', style }: Avat
     style,
   ];
 
-  if (uri) {
+  const [failedUri, setFailedUri] = useState<string | null>(null);
+
+  if (uri && uri !== failedUri) {
     return (
       <Image
         source={{ uri }}
         style={base as any}
         accessibilityIgnoresInvertColors
         accessibilityLabel={name ?? undefined}
+        onError={() => setFailedUri(uri)}
       />
     );
   }

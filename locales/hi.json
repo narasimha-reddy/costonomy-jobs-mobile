@@ -19,7 +19,6 @@
   "common.errorBody": "अपना इंटरनेट देखें और फिर से कोशिश करें।",
   "common.required": "ज़रूरी",
   "common.keepIt": "रहने दें",
-
   "time.justNow": "अभी",
   "time.minutesAgo": "{n} मिनट पहले",
   "time.hoursAgo": "{n} घंटे पहले",
@@ -27,7 +26,6 @@
   "time.daysAgo": "{n} दिन पहले",
   "time.today": "आज",
   "time.tomorrow": "कल",
-
   "format.perMonth": "/महीना",
   "format.perDay": "/दिन",
   "format.perHour": "/घंटा",
@@ -36,7 +34,6 @@
   "format.oneYear": "1 साल",
   "format.years": "{n} साल",
   "format.minExperience": "{value}+ अनुभव",
-
   "auth.welcome.title": "रेस्टोरेंट की नौकरी, अब आसान",
   "auth.welcome.subtitle": "अपने पास किचन और सर्विस की नौकरी ढूँढें, या अपनी टीम के लिए नए लोग रखें।",
   "auth.welcome.language": "अपनी भाषा चुनें",
@@ -59,7 +56,6 @@
   "auth.intent.job.subtitle": "पास की नौकरियाँ देखें, एक टैप में अप्लाई करें और हर कदम पर नज़र रखें।",
   "auth.intent.hire.title": "मुझे स्टाफ़ रखना है",
   "auth.intent.hire.subtitle": "जॉब पोस्ट करें, उम्मीदवार ढूँढें और इंटरव्यू संभालें।",
-
   "onboard.step": "कदम {current} / {total}",
   "onboard.name.title": "आपका नाम क्या है?",
   "onboard.name.subtitle": "रेस्टोरेंट आपके आवेदन पर यही नाम देखेंगे।",
@@ -80,7 +76,6 @@
   "experience.1to2": "1 – 2 साल",
   "experience.2to5": "2 – 5 साल",
   "experience.5plus": "5 साल से ज़्यादा",
-
   "onboardR.restaurant.title": "अपना रेस्टोरेंट सेट करें",
   "onboardR.restaurant.subtitle": "उम्मीदवार आपकी नौकरियों पर यही नाम देखेंगे।",
   "onboardR.yourName": "आपका नाम",
@@ -107,7 +102,6 @@
   "restaurantType.bar": "बार और पब",
   "restaurantType.bakery": "बेकरी",
   "restaurantType.catering": "कैटरिंग",
-
   "tabs.jobs": "नौकरियाँ",
   "tabs.applications": "आवेदन",
   "tabs.alerts": "अलर्ट",
@@ -115,7 +109,6 @@
   "tabs.staff": "स्टाफ़ खोजें",
   "tabs.interviews": "इंटरव्यू",
   "tabs.business": "रेस्टोरेंट",
-
   "feed.greeting.morning": "सुप्रभात",
   "feed.greeting.afternoon": "नमस्ते",
   "feed.greeting.evening": "शुभ संध्या",
@@ -131,7 +124,6 @@
   "feed.empty.cta": "नई नौकरियाँ देखें",
   "feed.match": "{score}% मैच",
   "feed.applied": "अप्लाई किया",
-
   "job.title": "नौकरी",
   "job.salary": "सैलरी",
   "job.experience": "अनुभव",
@@ -161,7 +153,6 @@
   "apply.incomplete.title": "अप्लाई करने के लिए प्रोफ़ाइल पूरी करें",
   "apply.incomplete.body": "आपकी प्रोफ़ाइल {current}% पूरी है। रेस्टोरेंट को कम से कम {required}% चाहिए।",
   "apply.incomplete.cta": "प्रोफ़ाइल पूरी करें",
-
   "search.title": "नौकरी खोजें",
   "search.placeholder": "काम, खाना या रेस्टोरेंट",
   "search.role": "काम",
@@ -174,7 +165,6 @@
   "search.empty.title": "कोई नौकरी नहीं मिली",
   "search.empty.body": "कम फ़िल्टर लगाएँ या कोई और शब्द खोजें।",
   "search.clear": "फ़िल्टर हटाएँ",
-
   "applications.title": "आवेदन",
   "applications.active": "चालू",
   "applications.closed": "बंद",
@@ -183,7 +173,6 @@
   "applications.empty.cta": "नौकरियाँ देखें",
   "applications.appliedOn": "{date} को अप्लाई किया",
   "applications.closedEmpty": "अभी कुछ बंद नहीं हुआ",
-
   "application.title": "आवेदन",
   "application.progress": "प्रगति",
   "application.yourNote": "आपका नोट",
@@ -203,7 +192,6 @@
   "application.next.DID_NOT_JOIN": "यह भर्ती आगे नहीं बढ़ी।",
   "application.next.REJECTED": "इस बार रेस्टोरेंट ने दूसरे उम्मीदवारों को चुना।",
   "application.next.WITHDRAWN": "आपने यह आवेदन वापस ले लिया।",
-
   "employee.applicationStatus.APPLIED": "अप्लाई किया",
   "employee.applicationStatus.VIEWED": "देखा गया",
   "employee.applicationStatus.SHORTLISTED": "शॉर्टलिस्ट",
@@ -239,7 +227,6 @@
   "restaurant.checkinStatus.MOCK_LOCATION_SUSPECTED": "जाँच ज़रूरी",
   "restaurant.checkinStatus.OUTSIDE_WINDOW": "चेक-इन समय के बाहर",
   "restaurant.checkinStatus.MANUAL_OVERRIDE": "जाँचा गया",
-
   "interview.title": "इंटरव्यू",
   "interview.forJob": "{job} के लिए",
   "interview.with": "{name} के साथ",
@@ -269,7 +256,6 @@
   "interview.cancelledBy.EMPLOYEE": "उम्मीदवार ने रद्द किया",
   "interview.cancelledBy.RESTAURANT": "रेस्टोरेंट ने रद्द किया",
   "interview.cancelledBy.SYSTEM": "रद्द",
-
   "offer.title": "नौकरी का ऑफ़र",
   "offer.salary": "महीने की सैलरी",
   "offer.joiningDate": "जॉइनिंग की तारीख",
@@ -292,7 +278,6 @@
   "offer.joiningState.JOINING_EXPECTED": "जॉइनिंग बाकी",
   "offer.joiningState.JOINED": "जॉइन किया",
   "offer.joiningState.DID_NOT_JOIN": "जॉइन नहीं किया",
-
   "checkin.title": "चेक-इन",
   "checkin.explainer.title": "हम आपकी लोकेशन सिर्फ़ एक बार देखेंगे",
   "checkin.explainer.body": "सिर्फ़ यह पक्का करने के लिए कि आप पहुँच गए हैं। हम आपको कभी पीछे से ट्रैक नहीं करते।",
@@ -306,7 +291,6 @@
   "checkin.already": "आपने {time} चेक-इन किया",
   "checkin.event.interview": "{restaurant} में इंटरव्यू",
   "checkin.event.joining": "{restaurant} में पहला दिन",
-
   "profile.title": "प्रोफ़ाइल",
   "profile.strength": "प्रोफ़ाइल की मज़बूती",
   "profile.strengthHint": "पूरी प्रोफ़ाइल वाले जल्दी शॉर्टलिस्ट होते हैं।",
@@ -333,7 +317,6 @@
   "profile.switchToHiring": "भर्ती पर जाएँ",
   "profile.startHiring": "रेस्टोरेंट के लिए भर्ती करनी है?",
   "profile.addSkills": "स्किल जोड़ें",
-
   "profileEdit.title": "प्रोफ़ाइल बदलें",
   "profileEdit.name": "पूरा नाम",
   "profileEdit.role": "काम",
@@ -344,14 +327,12 @@
   "profileEdit.expectedSalary": "महीने की अपेक्षित सैलरी",
   "profileEdit.availability": "आप कब से शुरू कर सकते हैं?",
   "profileEdit.saved": "प्रोफ़ाइल अपडेट हो गई",
-
   "skills.title": "स्किल",
   "skills.subtitle": "जोड़ने या हटाने के लिए टैप करें। रेस्टोरेंट इन्हीं से खोजते हैं।",
   "skills.category.Cuisine": "आप कौन सा खाना बना सकते हैं",
   "skills.category.Technical": "स्किल",
   "skills.category.Language": "आप कौन सी भाषा बोलते हैं",
   "skills.category.Other": "अन्य",
-
   "workHistory.title": "काम का अनुभव",
   "workHistory.empty.title": "अभी कोई पुरानी नौकरी नहीं",
   "workHistory.empty.body": "आपने कहाँ काम किया है, यह जोड़ने से रेस्टोरेंट का भरोसा बढ़ता है।",
@@ -366,14 +347,12 @@
   "workHistory.removeConfirm": "यह नौकरी हटाएँ?",
   "workHistory.month": "महीना",
   "workHistory.year": "साल",
-
   "preferences.title": "नौकरी की पसंद",
   "preferences.areas": "आप कहाँ काम करना चाहेंगे?",
   "preferences.anywhere": "शहर में कहीं भी",
   "preferences.roles": "आपकी पसंद के काम",
   "preferences.shifts": "पसंद की शिफ़्ट",
   "preferences.saved": "पसंद सेव हो गई",
-
   "settings.title": "सेटिंग्स",
   "settings.language": "भाषा",
   "settings.notifications": "सूचनाएँ",
@@ -387,7 +366,6 @@
   "settings.startHiring": "भर्ती शुरू करें",
   "settings.startJobSearch": "नौकरी खोजें",
   "settings.nameSaved": "नाम अपडेट हो गया",
-
   "notifPrefs.title": "सूचनाएँ",
   "notifPrefs.subtitle": "चुनें कि फ़ोन पर क्या आए। बाकी सब अलर्ट में दिखता रहेगा।",
   "notifPrefs.inAppOnly": "सिर्फ़ ऐप में",
@@ -416,13 +394,11 @@
   "notificationType.OFFER_DECLINED": "ऑफ़र मना हुआ",
   "notificationType.JOINING_CHECKIN_RESTAURANT": "नए कर्मचारी ने चेक-इन किया",
   "notificationType.CANDIDATE_DID_NOT_JOIN": "उम्मीदवार ने जॉइन नहीं किया",
-
   "alerts.title": "अलर्ट",
   "alerts.markAllRead": "सब पढ़ा हुआ करें",
   "alerts.empty.title": "कोई नया अलर्ट नहीं",
   "alerts.empty.body": "आपके आवेदनों और इंटरव्यू की खबरें यहाँ दिखेंगी।",
   "alerts.empty.restaurantBody": "नए आवेदन और उम्मीदवारों के जवाब यहाँ दिखेंगे।",
-
   "availability.IMMEDIATE": "तुरंत",
   "availability.WITHIN_15_DAYS": "15 दिन में",
   "availability.WITHIN_30_DAYS": "30 दिन में",
@@ -446,7 +422,6 @@
   "restaurantRole.ADMIN": "एडमिन",
   "restaurantRole.HR_RECRUITER": "रिक्रूटर",
   "restaurantRole.OUTLET_MANAGER": "आउटलेट मैनेजर",
-
   "rjobs.title": "आपकी नौकरियाँ",
   "rjobs.post": "नौकरी पोस्ट करें",
   "rjobs.empty.title": "अपनी पहली नौकरी पोस्ट करें",
@@ -457,7 +432,6 @@
   "rjobs.new": "{count} नए",
   "rjobs.open": "खुली",
   "rjobs.all": "सभी",
-
   "jobForm.createTitle": "नौकरी पोस्ट करें",
   "jobForm.editTitle": "नौकरी बदलें",
   "jobForm.outlet": "आउटलेट",
@@ -486,7 +460,6 @@
   "jobForm.saved": "नौकरी सेव हो गई",
   "jobForm.salaryInvalid": "शुरुआती सैलरी से ज़्यादा होनी चाहिए",
   "jobForm.missing": "पब्लिश करने के लिए {fields} भरें",
-
   "pipeline.stage.new": "नए",
   "pipeline.stage.shortlisted": "शॉर्टलिस्ट",
   "pipeline.stage.interview": "इंटरव्यू",
@@ -505,7 +478,6 @@
   "pipeline.edit": "नौकरी बदलें",
   "pipeline.updated": "नौकरी अपडेट हो गई",
   "pipeline.salary": "{salary}",
-
   "rapp.title": "उम्मीदवार",
   "rapp.match": "{score}% मैच",
   "rapp.experience": "अनुभव",
@@ -529,7 +501,6 @@
   "rapp.viewInterview": "इंटरव्यू देखें",
   "rapp.viewOffer": "ऑफ़र देखें",
   "rapp.history": "इतिहास",
-
   "schedule.title": "इंटरव्यू तय करें",
   "schedule.rescheduleTitle": "नया समय सुझाएँ",
   "schedule.day": "दिन",
@@ -544,7 +515,6 @@
   "schedule.sent": "बुलावा भेज दिया",
   "schedule.rescheduled": "नया समय भेज दिया",
   "schedule.pickTime": "समय चुनें",
-
   "offerForm.title": "ऑफ़र दें",
   "offerForm.salary": "महीने की सैलरी (₹)",
   "offerForm.salaryHint": "उनकी अपेक्षा {amount} है",
@@ -554,7 +524,6 @@
   "offerForm.joiningSummary": "ज्वाइनिंग {date}",
   "offerForm.send": "ऑफ़र भेजें",
   "offerForm.sent": "ऑफ़र भेज दिया",
-
   "joiningForm.title": "क्या उन्होंने जॉइन किया?",
   "joiningForm.subtitle": "इससे {name} की भर्ती पूरी होगी।",
   "joiningForm.joined": "जॉइन किया",
@@ -562,7 +531,6 @@
   "joiningForm.reason": "क्या हुआ? (वैकल्पिक)",
   "joiningForm.submit": "पक्का करें",
   "joiningForm.saved": "जॉइनिंग दर्ज हो गई",
-
   "staff.title": "स्टाफ़ खोजें",
   "staff.subtitle": "आपके आउटलेट के पास के उम्मीदवार, सबसे अच्छे मैच पहले",
   "staff.forJob": "नौकरी से मिलाएँ",
@@ -583,26 +551,22 @@
   "staff.expects": "अपेक्षा {amount}",
   "staff.noOutlet": "स्टाफ़ खोजने के लिए एक आउटलेट जोड़ें।",
   "staff.profileStrength": "प्रोफ़ाइल {percent}% पूरी",
-
   "rinterviews.title": "इंटरव्यू",
   "rinterviews.subtitle": "अगले दो हफ़्तों के इंटरव्यू",
   "rinterviews.empty.title": "कोई आने वाला इंटरव्यू नहीं",
   "rinterviews.empty.body": "किसी उम्मीदवार को शॉर्टलिस्ट करके इंटरव्यू तय करें, वह यहाँ दिखेगा।",
-
   "business.title": "रेस्टोरेंट",
   "business.profile": "रेस्टोरेंट प्रोफ़ाइल",
   "business.outlets": "आउटलेट",
   "business.team": "टीम",
   "business.yourRole": "आप {role} हैं",
   "business.switchRestaurant": "रेस्टोरेंट बदलें",
-
   "outlets.title": "आउटलेट",
   "outlets.add": "आउटलेट जोड़ें",
   "outlets.edit": "आउटलेट बदलें",
   "outlets.checkInReady": "चेक-इन तैयार",
   "outlets.noPin": "लोकेशन पिन नहीं",
   "outlets.saved": "आउटलेट सेव हो गया",
-
   "team.title": "टीम",
   "team.invite": "सदस्य बुलाएँ",
   "team.pending": "अभी साइन इन नहीं किया",
@@ -616,11 +580,51 @@
   "team.remove.confirm": "{name} को टीम से हटाएँ?",
   "team.removed": "टीम से हटा दिया",
   "team.you": "आप",
-
   "rprofile.title": "रेस्टोरेंट प्रोफ़ाइल",
   "rprofile.name": "रेस्टोरेंट का नाम",
   "rprofile.type": "प्रकार",
   "rprofile.description": "परिचय",
   "rprofile.descriptionPlaceholder": "आपके साथ काम करने के बारे में उम्मीदवारों को क्या जानना चाहिए?",
-  "rprofile.saved": "रेस्टोरेंट अपडेट हो गया"
+  "rprofile.saved": "रेस्टोरेंट अपडेट हो गया",
+  "media.error.network": "इंटरनेट कनेक्शन नहीं है। कनेक्शन जाँचें और फिर से कोशिश करें।",
+  "media.error.type": "यह फ़ाइल प्रकार समर्थित नहीं है। फ़ोटो (JPG या PNG) या PDF इस्तेमाल करें।",
+  "media.error.tooLarge": "यह फ़ाइल बहुत बड़ी है। छोटी फ़ाइल चुनें।",
+  "media.error.failed": "अपलोड पूरा नहीं हुआ। फिर से कोशिश करें।",
+  "media.photoTitle": "प्रोफ़ाइल फ़ोटो",
+  "media.logoTitle": "रेस्टोरेंट का लोगो",
+  "media.changePhoto": "प्रोफ़ाइल फ़ोटो बदलें",
+  "media.changeLogo": "लोगो बदलें",
+  "media.takePhoto": "फ़ोटो खींचें",
+  "media.chooseFromGallery": "गैलरी से चुनें",
+  "media.removePhoto": "फ़ोटो हटाएँ",
+  "media.removeLogo": "लोगो हटाएँ",
+  "media.photoSaved": "फ़ोटो अपडेट हो गई",
+  "media.logoSaved": "लोगो अपडेट हो गया",
+  "media.removed": "हटा दिया गया",
+  "media.photoHint": "चेहरे की साफ़ फ़ोटो से रेस्टोरेंट इंटरव्यू पर आपको पहचान पाता है।",
+  "documents.title": "रिज़्यूमे और सर्टिफ़िकेट",
+  "documents.resume": "रिज़्यूमे",
+  "documents.certificate": "सर्टिफ़िकेट",
+  "documents.image": "फ़ोटो",
+  "documents.addResume": "अपना रिज़्यूमे जोड़ें",
+  "documents.resumeHint": "PDF या उसकी फ़ोटो · ज़रूरी नहीं",
+  "documents.addCertificate": "सर्टिफ़िकेट जोड़ें",
+  "documents.uploading": "अपलोड हो रहा है…",
+  "documents.resumeSaved": "रिज़्यूमे सेव हो गया",
+  "documents.saved": "सर्टिफ़िकेट सेव हो गया",
+  "documents.options": "विकल्प",
+  "documents.open": "खोलें",
+  "documents.replace": "बदलें",
+  "documents.removeTitle": "यह दस्तावेज़ हटाएँ?",
+  "documents.privacy": "सिर्फ़ उन रेस्टोरेंट के साथ शेयर होता है जहाँ आप अप्लाई करते हैं।",
+  "documents.nameTitle": "सर्टिफ़िकेट का नाम",
+  "documents.nameLabel": "नाम",
+  "documents.namePlaceholder": "जैसे FSSAI फ़ूड हैंडलर",
+  "documents.noneFromCandidate": "कोई रिज़्यूमे या सर्टिफ़िकेट नहीं जोड़ा गया।",
+  "contact.show": "फ़ोन नंबर देखें",
+  "contact.short": "संपर्क",
+  "contact.title": "{name} से संपर्क करें",
+  "contact.call": "कॉल करें",
+  "contact.whatsapp": "WhatsApp",
+  "contact.hint": "यह नंबर सिर्फ़ काम की बात के लिए इस्तेमाल करें। हर बार नंबर देखने का रिकॉर्ड रखा जाता है।"
 }

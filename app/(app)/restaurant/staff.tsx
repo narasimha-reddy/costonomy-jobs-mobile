@@ -6,12 +6,13 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { Colors } from '@/constants/colors';
 import { Spacing } from '@/constants/spacing';
 import { PRESS_OPACITY } from '@/constants/motion';
-import { Avatar, Chip, EmptyState, ProgressBar, SkeletonList } from '@/components/ui';
+import { Avatar, Button, Chip, EmptyState, ProgressBar, SkeletonList } from '@/components/ui';
 import { LargeTitle } from '@/components/app/Header';
 import { Txt } from '@/components/app/Txt';
 import { ListGroup, ListRow, SelectSheet } from '@/components/app/Controls';
 import { Sheet } from '@/components/app/Sheet';
 import { ErrorView } from '@/components/app/Feedback';
+import { ContactSheet } from '@/components/app/ContactSheet';
 import { useT, type MessageKey } from '@/lib/i18n';
 import { api, type CandidateResult } from '@/lib/api';
 import { experience, rupees } from '@/lib/format';
@@ -41,6 +42,7 @@ export default function FindStaff() {
   const [minExp, setMinExp] = useState<number | null>(null);
   const [picker, setPicker] = useState<'job' | 'role' | 'exp' | null>(null);
   const [selected, setSelected] = useState<CandidateResult | null>(null);
+  const [contactFor, setContactFor] = useState<CandidateResult | null>(null);
 
   // Ranking needs something to rank against. Default to the newest open job the
   // first time jobs load, so the first screen a restaurant sees is useful rather
@@ -94,7 +96,7 @@ export default function FindStaff() {
             </ScrollView>
           </View>
         }
-        renderItem={({ item }) => <CandidateCard candidate={item} ranked={ranked} onPress={() => setSelected(item)} />}
+        renderItem={({ item }) => <CandidateCard candidate={item} ranked={ranked} onPress={() => setSelected(item)} onContact={() => setContactFor(item)} />}
         ListEmptyComponent={
           outlets.length === 0 && !query.isLoading ? (
             <EmptyState icon="storefront-outline" title={t('staff.noOutlet')} />
@@ -139,9 +141,34 @@ export default function FindStaff() {
         onChange={(v) => { setMinExp(v); setPicker(null); }}
       />
 
-      <Sheet visible={selected != null} onClose={() => setSelected(null)} title={selected?.name ?? ''} subtitle={selected?.primaryRoleDisplay ?? undefined}>
+      <Sheet
+        visible={selected != null}
+        onClose={() => setSelected(null)}
+        title={selected?.name ?? ''}
+        subtitle={selected?.primaryRoleDisplay ?? undefined}
+        footer={
+          <Button
+            label={t('contact.show')}
+            icon="call"
+            size="lg"
+            fullWidth
+            onPress={() => {
+              setContactFor(selected);
+              setSelected(null);
+            }}
+          />
+        }
+      >
         {selected != null && <CandidateDetail candidate={selected} />}
       </Sheet>
+
+      <ContactSheet
+        visible={contactFor != null}
+        onClose={() => setContactFor(null)}
+        restaurantId={restaurantId}
+        employeeId={contactFor?.employeeId ?? null}
+        name={contactFor?.name}
+      />
     </SafeAreaView>
   );
 }
@@ -157,24 +184,35 @@ function ScoreRing({ score }: { score: number }) {
   );
 }
 
-function CandidateCard({ candidate: c, onPress, ranked }: { candidate: CandidateResult; onPress: () => void; ranked: boolean }) {
+function CandidateCard({ candidate: c, onPress, onContact, ranked }: { candidate: CandidateResult; onPress: () => void; onContact: () => void; ranked: boolean }) {
   const { t } = useT();
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={PRESS_OPACITY} style={styles.card} accessibilityRole="button">
-      <Avatar name={c.name} uri={c.profilePhotoUrl} />
-      <View style={{ flex: 1, gap: 2 }}>
-        <Txt variant="subheading" numberOfLines={1}>
-          {c.name}
-        </Txt>
-        <Txt variant="caption" color={Colors.textSecondary} numberOfLines={1}>
-          {[c.primaryRoleDisplay, experience(c.totalExperienceMonths), c.localityDisplay].filter(Boolean).join(' · ')}
-        </Txt>
-        <Txt variant="caption" color={Colors.textTertiary}>
+    <View style={styles.card}>
+      <TouchableOpacity onPress={onPress} activeOpacity={PRESS_OPACITY} style={styles.cardTop} accessibilityRole="button" accessibilityLabel={c.name ?? undefined}>
+        <Avatar name={c.name} uri={c.profilePhotoUrl} />
+        <View style={{ flex: 1, gap: 2 }}>
+          <Txt variant="subheading" numberOfLines={1}>
+            {c.name}
+          </Txt>
+          <Txt variant="caption" color={Colors.textSecondary} numberOfLines={1}>
+            {[c.primaryRoleDisplay, experience(c.totalExperienceMonths), c.localityDisplay].filter(Boolean).join(' · ')}
+          </Txt>
+        </View>
+        {ranked ? <ScoreRing score={c.matchScore} /> : <Ionicons name="chevron-forward" size={18} color={Colors.textTertiary} />}
+      </TouchableOpacity>
+      {/* Beside the card's own button, not inside it — the fast path the spec asks for. */}
+      <View style={styles.cardBottom}>
+        <Txt variant="caption" color={Colors.textTertiary} style={{ flex: 1 }} numberOfLines={1}>
           {[c.expectedSalary ? t('staff.expects', { amount: rupees(c.expectedSalary) }) : null, t(`availability.${c.availability}` as MessageKey)].filter(Boolean).join(' · ')}
         </Txt>
+        <TouchableOpacity onPress={onContact} activeOpacity={PRESS_OPACITY} style={styles.contact} accessibilityRole="button" accessibilityLabel={t('contact.show')} hitSlop={8}>
+          <Ionicons name="call" size={14} color={Colors.accentDark} />
+          <Txt variant="captionStrong" color={Colors.accentDark}>
+            {t('contact.short')}
+          </Txt>
+        </TouchableOpacity>
       </View>
-      {ranked ? <ScoreRing score={c.matchScore} /> : <Ionicons name="chevron-forward" size={18} color={Colors.textTertiary} />}
-    </TouchableOpacity>
+    </View>
   );
 }
 
@@ -214,14 +252,30 @@ function CandidateDetail({ candidate: c }: { candidate: CandidateResult }) {
 const styles = StyleSheet.create({
   fill: { flex: 1, backgroundColor: Colors.background },
   card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.md,
     backgroundColor: Colors.surface,
     borderRadius: Spacing.radiusLg,
     borderWidth: 1,
     borderColor: Colors.borderLight,
-    padding: Spacing.lg,
+    overflow: 'hidden',
+  },
+  cardTop: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, padding: Spacing.lg, paddingBottom: Spacing.md },
+  cardBottom: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.md,
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.sm,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: Colors.border,
+  },
+  contact: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    minHeight: 34,
+    paddingHorizontal: Spacing.md,
+    borderRadius: Spacing.radiusFull,
+    backgroundColor: Colors.accentLight,
   },
   ring: { width: 46, height: 46, borderRadius: 23, borderWidth: 3, alignItems: 'center', justifyContent: 'center' },
   hint: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, borderRadius: Spacing.radiusMd, backgroundColor: Colors.background },

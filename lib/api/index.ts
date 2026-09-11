@@ -52,6 +52,16 @@ export const api = {
     addExperience: (body: T.ExperienceInput) =>
       call<T.Experience>('/employees/me/experience', { method: 'POST', body }),
     deleteExperience: (id: number) => call<void>(`/employees/me/experience/${id}`, { method: 'DELETE' }),
+    photoUpload: (contentType: string, sizeBytes: number) =>
+      call<T.UploadTicket>('/employees/me/photo/uploads', { method: 'POST', body: { contentType, sizeBytes } }),
+    setPhoto: (uploadToken: string) => call<T.Profile>('/employees/me/photo', { method: 'PUT', body: { uploadToken } }),
+    removePhoto: () => call<T.Profile>('/employees/me/photo', { method: 'DELETE' }),
+    documents: () => call<T.EmployeeDocument[]>('/employees/me/documents'),
+    documentUpload: (contentType: string, sizeBytes: number) =>
+      call<T.UploadTicket>('/employees/me/documents/uploads', { method: 'POST', body: { contentType, sizeBytes } }),
+    addDocument: (body: { uploadToken: string; type: T.DocumentType; title?: string | null; fileName?: string | null }) =>
+      call<T.EmployeeDocument>('/employees/me/documents', { method: 'POST', body }),
+    deleteDocument: (id: number) => call<void>(`/employees/me/documents/${id}`, { method: 'DELETE' }),
     preferences: () => call<T.Preferences>('/employees/me/preferences'),
     updatePreferences: (body: {
       preferredLocations?: { cityId: number; localityId: number | null }[];
@@ -86,6 +96,7 @@ export const api = {
     select: (id: number) => call<T.Application>(`/applications/${id}/select`, { method: 'POST' }),
     interviews: (id: number) => call<T.Interview[]>(`/applications/${id}/interviews`),
     offer: (id: number) => call<T.Offer>(`/applications/${id}/offer`),
+    documents: (id: number) => call<T.EmployeeDocument[]>(`/applications/${id}/documents`),
   },
 
   interviews: {
@@ -136,6 +147,13 @@ export const api = {
       call<T.Restaurant>('/restaurants', { method: 'POST', body }),
     update: (id: number, body: { name: string; restaurantType?: string | null; description?: string | null }) =>
       call<T.Restaurant>(`/restaurants/${id}`, { method: 'PUT', body }),
+    logoUpload: (id: number, contentType: string, sizeBytes: number) =>
+      call<T.UploadTicket>(`/restaurants/${id}/logo/uploads`, { method: 'POST', body: { contentType, sizeBytes } }),
+    setLogo: (id: number, uploadToken: string) =>
+      call<T.Restaurant>(`/restaurants/${id}/logo`, { method: 'PUT', body: { uploadToken } }),
+    removeLogo: (id: number) => call<T.Restaurant>(`/restaurants/${id}/logo`, { method: 'DELETE' }),
+    contact: (id: number, employeeId: number) =>
+      call<T.CandidateContact>(`/restaurants/${id}/candidates/${employeeId}/contact`, { method: 'POST' }),
     outlets: (id: number) => call<T.Outlet[]>(`/restaurants/${id}/outlets`),
     addOutlet: (id: number, body: T.OutletInput) =>
       call<T.Outlet>(`/restaurants/${id}/outlets`, { method: 'POST', body }),

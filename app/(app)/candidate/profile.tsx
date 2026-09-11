@@ -6,16 +6,19 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Colors } from '@/constants/colors';
 import { Spacing } from '@/constants/spacing';
 import { PRESS_OPACITY } from '@/constants/motion';
-import { Avatar, ProgressBar } from '@/components/ui';
+import { ProgressBar } from '@/components/ui';
 import { Screen } from '@/components/app/Screen';
 import { LargeTitle, IconButton } from '@/components/app/Header';
 import { Txt } from '@/components/app/Txt';
 import { ListGroup, ListRow, Section, ToggleRow } from '@/components/app/Controls';
 import { Tag } from '@/components/app/Pieces';
 import { ErrorView, Loading } from '@/components/app/Feedback';
+import { EditableAvatar } from '@/components/app/Media';
+import { MyDocuments } from '@/components/app/MyDocuments';
 import { useT, type MessageKey } from '@/lib/i18n';
 import { api } from '@/lib/api';
 import { experience, formatMobile, rupees } from '@/lib/format';
+import { upload } from '@/lib/media';
 import { keys, useExperience, useMySkills, useProfile } from '@/lib/queries';
 import { setRole, useSession } from '@/lib/session';
 
@@ -46,19 +49,32 @@ export default function Profile() {
     <Screen tone="tinted" refreshing={profileQuery.isRefetching} onRefresh={() => profileQuery.refetch()}>
       <LargeTitle title={t('profile.title')} right={<IconButton icon="settings-outline" label={t('profile.settings')} onPress={() => router.push('/settings')} />} />
 
-      <TouchableOpacity onPress={() => router.push('/profile/edit')} activeOpacity={PRESS_OPACITY} style={styles.card}>
+      <View style={styles.card}>
         <View style={styles.identity}>
-          <Avatar name={profile.name} uri={profile.profilePhotoUrl} size="lg" />
-          <View style={{ flex: 1 }}>
-            <Txt variant="title">{profile.name ?? t('common.notSet')}</Txt>
-            <Txt variant="body" color={Colors.textSecondary}>
-              {[profile.primaryRoleDisplay, experience(profile.totalExperienceMonths)].filter(Boolean).join(' · ')}
-            </Txt>
-            <Txt variant="caption" color={Colors.textTertiary}>
-              {formatMobile(profile.mobileNumber)}
-            </Txt>
-          </View>
-          <Ionicons name="create-outline" size={22} color={Colors.primary} />
+          <EditableAvatar
+            name={profile.name}
+            uri={profile.profilePhotoUrl}
+            onUpload={async (file) => {
+              const token = await upload(file, api.profile.photoUpload);
+              queryClient.setQueryData(keys.profile, await api.profile.setPhoto(token));
+            }}
+            onRemove={async () => {
+              queryClient.setQueryData(keys.profile, await api.profile.removePhoto());
+            }}
+          />
+          {/* The name block is its own button, beside the avatar's rather than around it. */}
+          <TouchableOpacity onPress={() => router.push('/profile/edit')} activeOpacity={PRESS_OPACITY} style={styles.identityText} accessibilityRole="button">
+            <View style={{ flex: 1 }}>
+              <Txt variant="title">{profile.name ?? t('common.notSet')}</Txt>
+              <Txt variant="body" color={Colors.textSecondary}>
+                {[profile.primaryRoleDisplay, experience(profile.totalExperienceMonths)].filter(Boolean).join(' · ')}
+              </Txt>
+              <Txt variant="caption" color={Colors.textTertiary}>
+                {formatMobile(profile.mobileNumber)}
+              </Txt>
+            </View>
+            <Ionicons name="create-outline" size={22} color={Colors.primary} />
+          </TouchableOpacity>
         </View>
 
         <View style={styles.strength}>
@@ -76,7 +92,7 @@ export default function Profile() {
             </View>
           )}
         </View>
-      </TouchableOpacity>
+      </View>
 
       <Section title={t('profile.about')}>
         <ListGroup>
@@ -110,6 +126,8 @@ export default function Profile() {
           </ListGroup>
         )}
       </Section>
+
+      <MyDocuments />
 
       <Section title={t('profile.workHistory')}>
         <ListGroup>
@@ -162,6 +180,7 @@ const styles = StyleSheet.create({
     padding: Spacing.xl,
   },
   identity: { flexDirection: 'row', alignItems: 'center', gap: Spacing.lg },
+  identityText: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   strength: { marginTop: Spacing.xl, paddingTop: Spacing.lg, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: Colors.border },
   missing: {
     flexDirection: 'row',

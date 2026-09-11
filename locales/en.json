@@ -19,7 +19,6 @@
   "common.errorBody": "Check your connection and try again.",
   "common.required": "Required",
   "common.keepIt": "Keep it",
-
   "time.justNow": "Just now",
   "time.minutesAgo": "{n}m ago",
   "time.hoursAgo": "{n}h ago",
@@ -27,7 +26,6 @@
   "time.daysAgo": "{n}d ago",
   "time.today": "Today",
   "time.tomorrow": "Tomorrow",
-
   "format.perMonth": "/month",
   "format.perDay": "/day",
   "format.perHour": "/hour",
@@ -36,7 +34,6 @@
   "format.oneYear": "1 yr",
   "format.years": "{n} yrs",
   "format.minExperience": "{value}+ exp",
-
   "auth.welcome.title": "Restaurant jobs, made simple",
   "auth.welcome.subtitle": "Find kitchen and service jobs near you, or hire your next team member.",
   "auth.welcome.language": "Choose your language",
@@ -59,7 +56,6 @@
   "auth.intent.job.subtitle": "Browse jobs near you, apply in one tap and track every step.",
   "auth.intent.hire.title": "I'm hiring staff",
   "auth.intent.hire.subtitle": "Post jobs, find candidates and manage interviews.",
-
   "onboard.step": "Step {current} of {total}",
   "onboard.name.title": "What's your name?",
   "onboard.name.subtitle": "Restaurants see this on your application.",
@@ -80,7 +76,6 @@
   "experience.1to2": "1 – 2 years",
   "experience.2to5": "2 – 5 years",
   "experience.5plus": "More than 5 years",
-
   "onboardR.restaurant.title": "Set up your restaurant",
   "onboardR.restaurant.subtitle": "Candidates see this name on your jobs.",
   "onboardR.yourName": "Your name",
@@ -107,7 +102,6 @@
   "restaurantType.bar": "Bar & pub",
   "restaurantType.bakery": "Bakery",
   "restaurantType.catering": "Catering",
-
   "tabs.jobs": "Jobs",
   "tabs.applications": "Applied",
   "tabs.alerts": "Alerts",
@@ -115,7 +109,6 @@
   "tabs.staff": "Find staff",
   "tabs.interviews": "Interviews",
   "tabs.business": "Restaurant",
-
   "feed.greeting.morning": "Good morning",
   "feed.greeting.afternoon": "Good afternoon",
   "feed.greeting.evening": "Good evening",
@@ -131,7 +124,6 @@
   "feed.empty.cta": "See latest jobs",
   "feed.match": "{score}% match",
   "feed.applied": "Applied",
-
   "job.title": "Job",
   "job.salary": "Salary",
   "job.experience": "Experience",
@@ -161,7 +153,6 @@
   "apply.incomplete.title": "Finish your profile to apply",
   "apply.incomplete.body": "Your profile is {current}% complete. Restaurants need at least {required}%.",
   "apply.incomplete.cta": "Complete profile",
-
   "search.title": "Search jobs",
   "search.placeholder": "Role, cuisine or restaurant",
   "search.role": "Role",
@@ -174,7 +165,6 @@
   "search.empty.title": "No jobs match",
   "search.empty.body": "Try fewer filters or a different word.",
   "search.clear": "Clear filters",
-
   "applications.title": "Applications",
   "applications.active": "Active",
   "applications.closed": "Closed",
@@ -183,7 +173,6 @@
   "applications.empty.cta": "Browse jobs",
   "applications.appliedOn": "Applied {date}",
   "applications.closedEmpty": "Nothing closed yet",
-
   "application.title": "Application",
   "application.progress": "Progress",
   "application.yourNote": "Your note",
@@ -203,7 +192,6 @@
   "application.next.DID_NOT_JOIN": "This hire didn't go ahead.",
   "application.next.REJECTED": "The restaurant went ahead with other candidates this time.",
   "application.next.WITHDRAWN": "You withdrew this application.",
-
   "employee.applicationStatus.APPLIED": "Applied",
   "employee.applicationStatus.VIEWED": "Viewed",
   "employee.applicationStatus.SHORTLISTED": "Shortlisted",
@@ -239,7 +227,6 @@
   "restaurant.checkinStatus.MOCK_LOCATION_SUSPECTED": "Needs review",
   "restaurant.checkinStatus.OUTSIDE_WINDOW": "Outside check-in time",
   "restaurant.checkinStatus.MANUAL_OVERRIDE": "Reviewed",
-
   "interview.title": "Interview",
   "interview.forJob": "For {job}",
   "interview.with": "With {name}",
@@ -269,7 +256,6 @@
   "interview.cancelledBy.EMPLOYEE": "Cancelled by the candidate",
   "interview.cancelledBy.RESTAURANT": "Cancelled by the restaurant",
   "interview.cancelledBy.SYSTEM": "Cancelled",
-
   "offer.title": "Job offer",
   "offer.salary": "Monthly salary",
   "offer.joiningDate": "Joining date",
@@ -292,7 +278,6 @@
   "offer.joiningState.JOINING_EXPECTED": "Joining expected",
   "offer.joiningState.JOINED": "Joined",
   "offer.joiningState.DID_NOT_JOIN": "Did not join",
-
   "checkin.title": "Check in",
   "checkin.explainer.title": "We'll check your location once",
   "checkin.explainer.body": "Only to confirm you've arrived. We never track you in the background.",
@@ -306,7 +291,6 @@
   "checkin.already": "You checked in {time}",
   "checkin.event.interview": "Interview at {restaurant}",
   "checkin.event.joining": "First day at {restaurant}",
-
   "profile.title": "Profile",
   "profile.strength": "Profile strength",
   "profile.strengthHint": "Complete profiles get shortlisted faster.",
@@ -333,7 +317,6 @@
   "profile.switchToHiring": "Switch to hiring",
   "profile.startHiring": "Hiring for a restaurant?",
   "profile.addSkills": "Add skills",
-
   "profileEdit.title": "Edit profile",
   "profileEdit.name": "Full name",
   "profileEdit.role": "Role",
@@ -344,14 +327,12 @@
   "profileEdit.expectedSalary": "Expected monthly salary",
   "profileEdit.availability": "When can you start?",
   "profileEdit.saved": "Profile updated",
-
   "skills.title": "Skills",
   "skills.subtitle": "Tap to add or remove. Restaurants search by these.",
   "skills.category.Cuisine": "Cuisines you can cook",
   "skills.category.Technical": "Skills",
   "skills.category.Language": "Languages you speak",
   "skills.category.Other": "Other",
-
   "workHistory.title": "Work history",
   "workHistory.empty.title": "No past jobs yet",
   "workHistory.empty.body": "Adding where you've worked builds trust with restaurants.",
@@ -366,14 +347,12 @@
   "workHistory.removeConfirm": "Remove this job?",
   "workHistory.month": "Month",
   "workHistory.year": "Year",
-
   "preferences.title": "Job preferences",
   "preferences.areas": "Where would you like to work?",
   "preferences.anywhere": "Anywhere in the city",
   "preferences.roles": "Roles you're interested in",
   "preferences.shifts": "Preferred shifts",
   "preferences.saved": "Preferences saved",
-
   "settings.title": "Settings",
   "settings.language": "Language",
   "settings.notifications": "Notifications",
@@ -387,7 +366,6 @@
   "settings.startHiring": "Start hiring",
   "settings.startJobSearch": "Look for a job",
   "settings.nameSaved": "Name updated",
-
   "notifPrefs.title": "Notifications",
   "notifPrefs.subtitle": "Choose what reaches your phone. Everything still shows up in Alerts.",
   "notifPrefs.inAppOnly": "In-app only",
@@ -416,13 +394,11 @@
   "notificationType.OFFER_DECLINED": "Offer declined",
   "notificationType.JOINING_CHECKIN_RESTAURANT": "New hire checked in",
   "notificationType.CANDIDATE_DID_NOT_JOIN": "Candidate did not join",
-
   "alerts.title": "Alerts",
   "alerts.markAllRead": "Mark all read",
   "alerts.empty.title": "You're all caught up",
   "alerts.empty.body": "Updates about your applications and interviews will show up here.",
   "alerts.empty.restaurantBody": "New applications and candidate replies will show up here.",
-
   "availability.IMMEDIATE": "Immediately",
   "availability.WITHIN_15_DAYS": "Within 15 days",
   "availability.WITHIN_30_DAYS": "Within 30 days",
@@ -446,7 +422,6 @@
   "restaurantRole.ADMIN": "Admin",
   "restaurantRole.HR_RECRUITER": "Recruiter",
   "restaurantRole.OUTLET_MANAGER": "Outlet manager",
-
   "rjobs.title": "Your jobs",
   "rjobs.post": "Post a job",
   "rjobs.empty.title": "Post your first job",
@@ -457,7 +432,6 @@
   "rjobs.new": "{count} new",
   "rjobs.open": "Open",
   "rjobs.all": "All",
-
   "jobForm.createTitle": "Post a job",
   "jobForm.editTitle": "Edit job",
   "jobForm.outlet": "Outlet",
@@ -486,7 +460,6 @@
   "jobForm.saved": "Job saved",
   "jobForm.salaryInvalid": "Must be more than the starting salary",
   "jobForm.missing": "Fill in {fields} to publish",
-
   "pipeline.stage.new": "New",
   "pipeline.stage.shortlisted": "Shortlisted",
   "pipeline.stage.interview": "Interview",
@@ -505,7 +478,6 @@
   "pipeline.edit": "Edit job",
   "pipeline.updated": "Job updated",
   "pipeline.salary": "{salary}",
-
   "rapp.title": "Candidate",
   "rapp.match": "{score}% match",
   "rapp.experience": "Experience",
@@ -529,7 +501,6 @@
   "rapp.viewInterview": "View interview",
   "rapp.viewOffer": "View offer",
   "rapp.history": "History",
-
   "schedule.title": "Schedule interview",
   "schedule.rescheduleTitle": "Suggest a new time",
   "schedule.day": "Day",
@@ -544,7 +515,6 @@
   "schedule.sent": "Invitation sent",
   "schedule.rescheduled": "New time sent",
   "schedule.pickTime": "Pick a time",
-
   "offerForm.title": "Make an offer",
   "offerForm.salary": "Monthly salary (₹)",
   "offerForm.salaryHint": "They expect {amount}",
@@ -554,7 +524,6 @@
   "offerForm.joiningSummary": "Joining {date}",
   "offerForm.send": "Send offer",
   "offerForm.sent": "Offer sent",
-
   "joiningForm.title": "Did they join?",
   "joiningForm.subtitle": "This closes the hire for {name}.",
   "joiningForm.joined": "Joined",
@@ -562,7 +531,6 @@
   "joiningForm.reason": "What happened? (optional)",
   "joiningForm.submit": "Confirm",
   "joiningForm.saved": "Joining recorded",
-
   "staff.title": "Find staff",
   "staff.subtitle": "Candidates near your outlets, best matches first",
   "staff.forJob": "Match to a job",
@@ -583,26 +551,22 @@
   "staff.expects": "Expects {amount}",
   "staff.noOutlet": "Add an outlet to start searching for staff.",
   "staff.profileStrength": "Profile {percent}% complete",
-
   "rinterviews.title": "Interviews",
   "rinterviews.subtitle": "Upcoming in the next two weeks",
   "rinterviews.empty.title": "No interviews coming up",
   "rinterviews.empty.body": "Shortlist a candidate and schedule an interview to see it here.",
-
   "business.title": "Restaurant",
   "business.profile": "Restaurant profile",
   "business.outlets": "Outlets",
   "business.team": "Team",
   "business.yourRole": "You're {role}",
   "business.switchRestaurant": "Switch restaurant",
-
   "outlets.title": "Outlets",
   "outlets.add": "Add outlet",
   "outlets.edit": "Edit outlet",
   "outlets.checkInReady": "Check-in ready",
   "outlets.noPin": "Location not pinned",
   "outlets.saved": "Outlet saved",
-
   "team.title": "Team",
   "team.invite": "Invite member",
   "team.pending": "Hasn't signed in yet",
@@ -616,11 +580,51 @@
   "team.remove.confirm": "Remove {name} from your team?",
   "team.removed": "Removed from team",
   "team.you": "You",
-
   "rprofile.title": "Restaurant profile",
   "rprofile.name": "Restaurant name",
   "rprofile.type": "Type",
   "rprofile.description": "About",
   "rprofile.descriptionPlaceholder": "What should candidates know about working with you?",
-  "rprofile.saved": "Restaurant updated"
+  "rprofile.saved": "Restaurant updated",
+  "media.error.network": "No internet connection. Check your connection and try again.",
+  "media.error.type": "This file type is not supported. Use a photo (JPG or PNG) or a PDF.",
+  "media.error.tooLarge": "This file is too large. Choose a smaller file.",
+  "media.error.failed": "The upload did not finish. Try again.",
+  "media.photoTitle": "Profile photo",
+  "media.logoTitle": "Restaurant logo",
+  "media.changePhoto": "Change profile photo",
+  "media.changeLogo": "Change logo",
+  "media.takePhoto": "Take a photo",
+  "media.chooseFromGallery": "Choose from gallery",
+  "media.removePhoto": "Remove photo",
+  "media.removeLogo": "Remove logo",
+  "media.photoSaved": "Photo updated",
+  "media.logoSaved": "Logo updated",
+  "media.removed": "Removed",
+  "media.photoHint": "A clear photo of your face helps the restaurant recognise you at the interview.",
+  "documents.title": "Resume & certificates",
+  "documents.resume": "Resume",
+  "documents.certificate": "Certificate",
+  "documents.image": "Photo",
+  "documents.addResume": "Add your resume",
+  "documents.resumeHint": "PDF or a photo of it · optional",
+  "documents.addCertificate": "Add a certificate",
+  "documents.uploading": "Uploading…",
+  "documents.resumeSaved": "Resume saved",
+  "documents.saved": "Certificate saved",
+  "documents.options": "Options",
+  "documents.open": "Open",
+  "documents.replace": "Replace",
+  "documents.removeTitle": "Remove this document?",
+  "documents.privacy": "Shared only with restaurants you apply to.",
+  "documents.nameTitle": "Name this certificate",
+  "documents.nameLabel": "Name",
+  "documents.namePlaceholder": "e.g. FSSAI food handler",
+  "documents.noneFromCandidate": "No resume or certificates added.",
+  "contact.show": "Show phone number",
+  "contact.short": "Contact",
+  "contact.title": "Contact {name}",
+  "contact.call": "Call",
+  "contact.whatsapp": "WhatsApp",
+  "contact.hint": "Use this number only to talk about work. Each time a number is shown, it is recorded."
 }

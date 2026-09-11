@@ -10,7 +10,8 @@
 const en = require('../locales/en.json');
 const hi = require('../locales/hi.json');
 
-const IDENTICAL_OK = new Set(['auth.phone.placeholder', 'pipeline.salary']);
+// Brand names stay as they are in every language.
+const IDENTICAL_OK = new Set(['auth.phone.placeholder', 'pipeline.salary', 'contact.whatsapp']);
 const problems = [];
 
 for (const key of Object.keys(en)) {

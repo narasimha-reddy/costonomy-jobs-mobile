@@ -235,7 +235,7 @@ export interface Application {
   attemptNo: number;
   appliedAt: string;
   timeline: TimelineEntry[];
-  candidate: { primaryRoleId: number | null; totalExperienceMonths: number | null; expectedSalary: number | null; availability: Availability } | null;
+  candidate: { primaryRoleId: number | null; totalExperienceMonths: number | null; expectedSalary: number | null; availability: Availability; profilePhotoUrl: string | null } | null;
   matchScore: number | null;
 }
 
@@ -384,4 +384,36 @@ export interface NotificationSetting {
   audience: 'EMPLOYEE' | 'RESTAURANT';
   pushEnabled: boolean;
   pushConfigurable: boolean;
+}
+
+// ── Media ────────────────────────────────────────────────────────────────────
+
+/** Where to PUT a file, and the token that attaches it once it has arrived. */
+export interface UploadTicket {
+  uploadToken: string;
+  uploadUrl: string;
+  method: 'PUT';
+  headers: Record<string, string>;
+  expiresAt: string;
+}
+
+export type DocumentType = 'RESUME' | 'CERTIFICATE' | 'OTHER';
+
+export interface EmployeeDocument {
+  id: number;
+  type: DocumentType;
+  title: string | null;
+  contentType: string;
+  sizeBytes: number;
+  fileName: string | null;
+  /** Signed; works for about 15 minutes, so fetch the list again before opening an old one. */
+  url: string;
+  createdAt: string;
+}
+
+/** From the logged contact reveal only. */
+export interface CandidateContact {
+  employeeId: number;
+  name: string | null;
+  mobileNumber: string;
 }
