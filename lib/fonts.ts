@@ -1,19 +1,14 @@
-import {
-  SourceSans3_300Light,
-  SourceSans3_400Regular,
-  SourceSans3_500Medium,
-  SourceSans3_600SemiBold,
-  SourceSans3_700Bold,
-  SourceSans3_800ExtraBold,
-} from '@expo-google-fonts/source-sans-3';
-import {
-  NotoSansDevanagari_300Light,
-  NotoSansDevanagari_400Regular,
-  NotoSansDevanagari_500Medium,
-  NotoSansDevanagari_600SemiBold,
-  NotoSansDevanagari_700Bold,
-  NotoSansDevanagari_800ExtraBold,
-} from '@expo-google-fonts/noto-sans-devanagari';
+// Per-weight subpaths, not the package index: the index requires every weight and
+// italic of the family, and Metro bundles every file it can see required — about
+// 10 MB of fonts for the four weights this app actually renders.
+import { SourceSans3_400Regular } from '@expo-google-fonts/source-sans-3/400Regular';
+import { SourceSans3_500Medium } from '@expo-google-fonts/source-sans-3/500Medium';
+import { SourceSans3_600SemiBold } from '@expo-google-fonts/source-sans-3/600SemiBold';
+import { SourceSans3_700Bold } from '@expo-google-fonts/source-sans-3/700Bold';
+import { NotoSansDevanagari_400Regular } from '@expo-google-fonts/noto-sans-devanagari/400Regular';
+import { NotoSansDevanagari_500Medium } from '@expo-google-fonts/noto-sans-devanagari/500Medium';
+import { NotoSansDevanagari_600SemiBold } from '@expo-google-fonts/noto-sans-devanagari/600SemiBold';
+import { NotoSansDevanagari_700Bold } from '@expo-google-fonts/noto-sans-devanagari/700Bold';
 
 /**
  * Every typeface the app can render, loaded at boot.
@@ -31,16 +26,12 @@ import {
  * ```
  */
 export const APP_FONTS = {
-  SourceSans3_300Light,
   SourceSans3_400Regular,
   SourceSans3_500Medium,
   SourceSans3_600SemiBold,
   SourceSans3_700Bold,
-  SourceSans3_800ExtraBold,
-  NotoSansDevanagari_300Light,
   NotoSansDevanagari_400Regular,
   NotoSansDevanagari_500Medium,
   NotoSansDevanagari_600SemiBold,
   NotoSansDevanagari_700Bold,
-  NotoSansDevanagari_800ExtraBold,
 } as const;

@@ -1,6 +1,6 @@
 import React, { useMemo, useRef } from 'react';
 import { ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { Colors } from '@/constants/colors';
 import { WEB_NO_OUTLINE } from '@/constants/platform';
 import { FontSize } from '@/constants/typography';

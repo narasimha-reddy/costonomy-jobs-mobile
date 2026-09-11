@@ -24,6 +24,8 @@ the Alerts tab polls the unread count every 30 seconds.
 - [ ] `eas.json` and a development build (push does not work in Expo Go)
 - [ ] `expo-notifications` for permission and display; `@react-native-firebase/messaging`
       for the token (iOS must send an FCM token, not the raw APNs token)
+- [ ] Add the `expo-notifications` plugin with `icon: ./assets/notification-icon.png`
+      (already drawn) and `color: #FF6000`
 - [ ] `POST /devices` after sign-in and on token refresh; send the token on logout
 - [ ] Route a tapped notification by `entityType` / `entityId`, same as the Alerts list
 - [ ] Ask for notification permission at a moment that explains itself (after the
@@ -31,10 +33,12 @@ the Alerts tab polls the unread count every 30 seconds.
 
 ## Before a store release
 
-- [ ] App icon, adaptive icon, splash, notification icon and favicon — `app.json`
-      points at five files in `assets/` that do not exist yet, so a native build fails
+- [x] App icon, adaptive icon, splash, notification icon and favicon
 - [x] Account deletion — Settings → Delete account (`POST /users/me/delete-request`)
-- [ ] Production API URL per build profile (`EXPO_PUBLIC_API_URL`)
+- [x] Build profiles (`eas.json`: development, preview, production). A release build
+      refuses to start without an https `EXPO_PUBLIC_API_URL`
+- [ ] **To provide:** the staging and production API URLs, then
+      `eas env:create --environment preview|production --name EXPO_PUBLIC_API_URL`
 - [ ] Run on real Android and iOS phones: camera, document picker, location check-in
       and secure storage have only been exercised on web
 - [ ] Crash reporting (Sentry, per `10-testing-cicd-seed-data.md`)

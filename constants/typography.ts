@@ -41,21 +41,23 @@ export type FontWeightName =
 export type ScriptName = 'latin' | 'devanagari';
 
 const LATIN_FONTS: Record<FontWeightName, string> = {
-  light: 'SourceSans3_300Light',
+  // light and extrabold are not bundled (see lib/fonts.ts); they fall back to
+  // the nearest loaded weight rather than to the platform face.
+  light: 'SourceSans3_400Regular',
   regular: 'SourceSans3_400Regular',
   medium: 'SourceSans3_500Medium',
   semibold: 'SourceSans3_600SemiBold',
   bold: 'SourceSans3_700Bold',
-  extrabold: 'SourceSans3_800ExtraBold',
+  extrabold: 'SourceSans3_700Bold',
 };
 
 const DEVANAGARI_FONTS: Record<FontWeightName, string> = {
-  light: 'NotoSansDevanagari_300Light',
+  light: 'NotoSansDevanagari_400Regular',
   regular: 'NotoSansDevanagari_400Regular',
   medium: 'NotoSansDevanagari_500Medium',
   semibold: 'NotoSansDevanagari_600SemiBold',
   bold: 'NotoSansDevanagari_700Bold',
-  extrabold: 'NotoSansDevanagari_800ExtraBold',
+  extrabold: 'NotoSansDevanagari_700Bold',
 };
 
 const SCRIPT_FONTS: Record<ScriptName, Record<FontWeightName, string>> = {

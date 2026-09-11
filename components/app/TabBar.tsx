@@ -1,5 +1,5 @@
 import React from 'react';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import type { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import { Colors } from '@/constants/colors';
 import { FontSize, fontFamilyFor } from '@/constants/typography';

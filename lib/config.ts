@@ -16,8 +16,25 @@ function devHost(): string {
   return Platform.OS === 'android' ? '10.0.2.2' : 'localhost';
 }
 
-export const API_URL: string =
-  process.env.EXPO_PUBLIC_API_URL ?? `http://${devHost()}:8080/costonomy-jobs-api`;
+/**
+ * A release build must be told where the API is, over HTTPS. Falling back to the
+ * dev host there would ship an app that silently talks to nobody, so it fails at
+ * launch instead, where the first test build shows it. Set EXPO_PUBLIC_API_URL
+ * per EAS environment (`eas env:create --environment preview|production`).
+ */
+function resolveApiUrl(): string {
+  const configured = process.env.EXPO_PUBLIC_API_URL;
+  if (__DEV__) return configured ?? `http://${devHost()}:8080/costonomy-jobs-api`;
+  if (!configured) {
+    throw new Error('EXPO_PUBLIC_API_URL is not set for this build. Set it in the EAS environment for this profile.');
+  }
+  if (!configured.startsWith('https://')) {
+    throw new Error(`EXPO_PUBLIC_API_URL must use https in a release build; got ${configured}.`);
+  }
+  return configured.replace(/\/$/, '');
+}
+
+export const API_URL: string = resolveApiUrl();
 
 /** Launch city. The only active city today; everything else is gated server-side. */
 export const DEFAULT_CITY_ID = 1;

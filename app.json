@@ -7,11 +7,6 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "scheme": "costonomyjobs",
-    "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#FFFFFF"
-    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.costonomy.jobs",
@@ -25,7 +20,7 @@
     "android": {
       "package": "com.costonomy.jobs",
       "adaptiveIcon": {
-        "backgroundColor": "#FFFFFF",
+        "backgroundColor": "#FF6000",
         "foregroundImage": "./assets/android-icon-foreground.png"
       },
       "permissions": [
@@ -38,11 +33,7 @@
       ],
       "blockedPermissions": [
         "android.permission.ACCESS_BACKGROUND_LOCATION"
-      ],
-      "notification": {
-        "icon": "./assets/notification-icon.png",
-        "color": "#FF6000"
-      }
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -66,6 +57,15 @@
           "photosPermission": "Costonomy Jobs uses your photos only when you choose a profile photo, a restaurant logo, or a picture of a document to add.",
           "cameraPermission": "Costonomy Jobs uses the camera only when you choose to take a profile photo or a picture of a document.",
           "microphonePermission": false
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash.png",
+          "imageWidth": 240,
+          "resizeMode": "contain",
+          "backgroundColor": "#FFFFFF"
         }
       ]
     ],

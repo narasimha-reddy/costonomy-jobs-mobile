@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, Linking, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { Colors } from '@/constants/colors';
 import { Spacing } from '@/constants/spacing';
 import { PRESS_OPACITY } from '@/constants/motion';
