@@ -679,5 +679,12 @@
   "pipeline.posted.body": "अपने WhatsApp ग्रुप में शेयर करें — रसोई की ज़्यादातर भर्ती जान-पहचान से होती है।",
   "share.job": "भर्ती: {where} में {title}। {salary}। Costonomy Jobs ऐप पर अप्लाई करें।",
   "common.offline": "आप ऑफ़लाइन हैं",
-  "common.offlineAction": "इंटरनेट कनेक्शन नहीं है। कनेक्शन जाँचकर फिर से कोशिश करें।"
+  "common.offlineAction": "इंटरनेट कनेक्शन नहीं है। कनेक्शन जाँचकर फिर से कोशिश करें।",
+  "jobForm.outlets": "आउटलेट",
+  "jobForm.outletsHint": "एक से ज़्यादा चुनें तो यही नौकरी हर आउटलेट पर पोस्ट होगी।",
+  "jobForm.postToOutlets": "{count} आउटलेट पर पोस्ट करें",
+  "jobForm.postedToOutlets": "{count} आउटलेट पर पोस्ट हो गई",
+  "pipeline.repost": "नौकरी फिर से पोस्ट करें",
+  "pipeline.repostHint": "यही जानकारी नई नौकरी में कॉपी करें",
+  "pipeline.reposted": "कॉपी हो गई — जानकारी जाँचकर पोस्ट करें"
 }

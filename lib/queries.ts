@@ -124,6 +124,11 @@ export function useJob(id: number) {
   return useQuery({ queryKey: keys.job(id), queryFn: () => api.jobs.get(id), enabled: id > 0 });
 }
 
+/** A job as its restaurant sees it, drafts included. Shares the job key prefix, so invalidating a job refreshes both. */
+export function useManagedJob(id: number) {
+  return useQuery({ queryKey: [...keys.job(id), 'manage'], queryFn: () => api.jobs.manage(id), enabled: id > 0 });
+}
+
 export function useMyApplications() {
   return useQuery({ queryKey: keys.myApplications, queryFn: api.applications.mine });
 }

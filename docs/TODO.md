@@ -63,8 +63,8 @@ the Alerts tab polls the unread count every 30 seconds.
       session handling, uploads, crash-report scrubbing, Chip and Avatar
 - [x] Offline state: one app-wide banner; queries pause offline and refetch on reconnect
 
-## Later (P1 in the backlog)
+## P1 from the backlog
 
-- In-app chat, replacing the phone-number contact
-- Repost a closed job
-- Post one vacancy to several outlets at once
+- [ ] In-app chat, replacing the phone-number contact
+- [x] Repost a closed job — job menu → Repost job, opens the copy to review and post
+- [x] Post one vacancy to several outlets at once — pick more than one outlet on the job form

@@ -679,5 +679,12 @@
   "pipeline.posted.body": "Share it in your WhatsApp groups — most kitchen hires come through people who know someone.",
   "share.job": "Hiring: {title} at {where}. {salary}. Apply on the Costonomy Jobs app.",
   "common.offline": "You're offline",
-  "common.offlineAction": "No internet connection. Check your connection and try again."
+  "common.offlineAction": "No internet connection. Check your connection and try again.",
+  "jobForm.outlets": "Outlets",
+  "jobForm.outletsHint": "Pick more than one to post this job at each of them.",
+  "jobForm.postToOutlets": "Post at {count} outlets",
+  "jobForm.postedToOutlets": "Posted at {count} outlets",
+  "pipeline.repost": "Repost job",
+  "pipeline.repostHint": "Copy these details into a new job",
+  "pipeline.reposted": "Copied — check the details and post"
 }

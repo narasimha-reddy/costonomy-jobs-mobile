@@ -16,7 +16,7 @@ import { useT, type MessageKey } from '@/lib/i18n';
 import { api, type EmploymentType, type JobInput, type JoiningRequirement, type Shift } from '@/lib/api';
 import { experience } from '@/lib/format';
 import { EXPERIENCE_MINIMUMS, JOINING, SHIFTS } from '@/lib/options';
-import { keys, useJob, useOutlets, useRoles, useSkills } from '@/lib/queries';
+import { keys, useManagedJob, useOutlets, useRoles, useSkills } from '@/lib/queries';
 import { useSession } from '@/lib/session';
 
 /**
@@ -32,9 +32,12 @@ export default function JobForm() {
   const outlets = useOutlets(restaurantId).data ?? [];
   const roles = useRoles().data ?? [];
   const skills = useSkills().data ?? [];
-  const existing = useJob(Number(id ?? 0));
+  const existing = useManagedJob(Number(id ?? 0));
 
-  const [outletId, setOutletId] = useState<number | null>(null);
+  // Creating: any number of outlets, one job each. Editing: the job's own outlet.
+  const [outletIds, setOutletIds] = useState<number[]>([]);
+  const outletId = outletIds[0] ?? null;
+  const setOutletId = (id: number) => setOutletIds([id]);
   const [roleId, setRoleId] = useState<number | null>(null);
   const [openings, setOpenings] = useState(1);
   const [minSalary, setMinSalary] = useState('');
@@ -54,7 +57,7 @@ export default function JobForm() {
 
   // One outlet is the common case: pick it, don't ask.
   useEffect(() => {
-    if (!editing && outletId == null && outlets.length === 1) setOutletId(outlets[0]!.id);
+    if (!editing && outletIds.length === 0 && outlets.length === 1) setOutletId(outlets[0]!.id);
   }, [outlets.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -78,6 +81,7 @@ export default function JobForm() {
   }, [existing.data?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const salaryError = minSalary && maxSalary && Number(maxSalary) < Number(minSalary) ? t('jobForm.salaryInvalid') : undefined;
+  const isDraft = editing && existing.data?.status === 'DRAFT';
   const ready = outletId != null && roleId != null && Number(minSalary) > 0 && Number(maxSalary) > 0 && !salaryError;
 
   const skillOptions = useMemo(
@@ -110,10 +114,19 @@ export default function JobForm() {
       publish: editing ? undefined : publish,
     };
     try {
-      const job = editing ? await api.jobs.update(Number(id), body) : await api.jobs.create(body);
+      if (!editing && outletIds.length > 1) {
+        const created = await api.jobs.createAtOutlets(outletIds, body, publish);
+        await queryClient.invalidateQueries({ queryKey: keys.restaurantJobs(restaurantId ?? 0) });
+        toast(publish ? t('jobForm.postedToOutlets', { count: created.length }) : t('jobForm.saved'));
+        router.back();
+        return;
+      }
+      let job = editing ? await api.jobs.update(Number(id), body) : await api.jobs.create(body);
+      // A draft (a new one, or a reposted job) is posted from the same form.
+      if (isDraft && publish) job = await api.jobs.transition(job.id, 'publish');
       await queryClient.invalidateQueries({ queryKey: keys.restaurantJobs(restaurantId ?? 0) });
       void queryClient.invalidateQueries({ queryKey: keys.job(job.id) });
-      toast(editing ? t('jobForm.saved') : publish ? t('jobForm.posted') : t('jobForm.saved'));
+      toast(publish && (!editing || isDraft) ? t('jobForm.posted') : t('jobForm.saved'));
       if (editing) router.back();
       else router.replace({ pathname: '/hiring/jobs/[id]', params: { id: String(job.id), ...(publish ? { posted: '1' } : {}) } });
     } catch (e) {
@@ -133,8 +146,15 @@ export default function JobForm() {
               {error}
             </Txt>
           )}
-          <Button label={editing ? t('common.saveChanges') : t('jobForm.post')} size="lg" fullWidth disabled={!ready} loading={busy === 'post'} onPress={() => submit(true)} />
-          {!editing && (
+          <Button
+            label={editing && !isDraft ? t('common.saveChanges') : outletIds.length > 1 ? t('jobForm.postToOutlets', { count: outletIds.length }) : t('jobForm.post')}
+            size="lg"
+            fullWidth
+            disabled={!ready}
+            loading={busy === 'post'}
+            onPress={() => submit(true)}
+          />
+          {(!editing || isDraft) && (
             <Button label={t('jobForm.saveDraft')} variant="ghost" fullWidth disabled={outletId == null || roleId == null} loading={busy === 'draft'} onPress={() => submit(false)} style={{ alignSelf: 'center' }} />
           )}
         </View>
@@ -143,8 +163,12 @@ export default function JobForm() {
       <View style={{ gap: Spacing.xxl, marginTop: Spacing.md }}>
         {outlets.length > 1 && (
           <View>
-            <FieldLabel>{t('jobForm.outlet')}</FieldLabel>
-            <ChipGroup options={outlets.map((o) => ({ value: o.id, label: o.name, icon: 'location-outline' as const }))} value={outletId} onChange={setOutletId} />
+            <FieldLabel hint={editing ? undefined : t('jobForm.outletsHint')}>{editing ? t('jobForm.outlet') : t('jobForm.outlets')}</FieldLabel>
+            {editing ? (
+              <ChipGroup options={outlets.map((o) => ({ value: o.id, label: o.name, icon: 'location-outline' as const }))} value={outletId} onChange={setOutletId} />
+            ) : (
+              <ChipGroup multiple options={outlets.map((o) => ({ value: o.id, label: o.name, icon: 'location-outline' as const }))} value={outletIds} onChange={setOutletIds} />
+            )}
           </View>
         )}
 

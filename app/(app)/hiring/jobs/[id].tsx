@@ -16,7 +16,7 @@ import { ConfirmSheet, ErrorView, errorMessage, toast } from '@/components/app/F
 import { useT, type MessageKey } from '@/lib/i18n';
 import { api, type Application, type ApplicationStatusCode } from '@/lib/api';
 import { experience, relativeTime, rupees, salaryRange } from '@/lib/format';
-import { keys, useJob, useJobApplications, useRoleName } from '@/lib/queries';
+import { keys, useJobApplications, useManagedJob, useRoleName } from '@/lib/queries';
 import { useSession } from '@/lib/session';
 import { useResponsive } from '@/hooks/useResponsive';
 import { shareJob } from '@/lib/share';
@@ -45,7 +45,7 @@ export default function JobPipeline() {
   const { gutter } = useResponsive();
   const { restaurantId } = useSession();
   const queryClient = useQueryClient();
-  const job = useJob(jobId);
+  const job = useManagedJob(jobId);
   const applications = useJobApplications(jobId);
   const [stage, setStage] = useState<Stage>('new');
   const [menu, setMenu] = useState(false);
@@ -68,6 +68,18 @@ export default function JobPipeline() {
       await api.jobs.transition(jobId, action);
       toast(t('pipeline.updated'));
       await refresh();
+    } catch (e) {
+      toast(errorMessage(e, t('common.errorBody')), 'error');
+    }
+  };
+
+  const repost = async () => {
+    setMenu(false);
+    try {
+      const copy = await api.jobs.repost(jobId);
+      void queryClient.invalidateQueries({ queryKey: keys.restaurantJobs(restaurantId ?? 0) });
+      toast(t('pipeline.reposted'));
+      router.push({ pathname: '/hiring/job-form', params: { id: String(copy.id) } });
     } catch (e) {
       toast(errorMessage(e, t('common.errorBody')), 'error');
     }
@@ -165,6 +177,9 @@ export default function JobPipeline() {
           {j?.status === 'DRAFT' && <ListRow icon="rocket-outline" iconColor={Colors.success} title={t('pipeline.publish')} onPress={() => transition('publish')} />}
           {j?.status === 'OPEN' && <ListRow icon="pause-circle-outline" title={t('pipeline.pause')} onPress={() => transition('pause')} />}
           {j?.status === 'PAUSED' && <ListRow icon="play-circle-outline" title={t('pipeline.resume')} onPress={() => transition('resume')} />}
+          {(j?.status === 'CLOSED' || j?.status === 'FILLED' || j?.status === 'EXPIRED') && (
+            <ListRow icon="copy-outline" iconColor={Colors.primary} title={t('pipeline.repost')} subtitle={t('pipeline.repostHint')} onPress={repost} />
+          )}
           {(j?.status === 'OPEN' || j?.status === 'PAUSED') && (
             <ListRow icon="close-circle-outline" title={t('pipeline.close')} danger onPress={() => { setMenu(false); setClosing(true); }} />
           )}

@@ -79,10 +79,16 @@ export const api = {
     feed: (params: T.FeedParams, offset = 0) =>
       request<T.Job[]>('/jobs', { query: { ...params, limit: PAGE, offset } }),
     get: (id: number) => call<T.Job>(`/jobs/${id}`),
+    /** The restaurant's own view: includes drafts, which the public endpoint hides. */
+    manage: (id: number) => call<T.Job>(`/jobs/${id}/manage`),
     apply: (id: number, coverNote?: string) =>
       call<T.Application>(`/jobs/${id}/apply`, { method: 'POST', body: { coverNote: coverNote || null, source: 'BROWSE' } }),
     create: (body: T.JobInput) => call<T.Job>('/jobs', { method: 'POST', body }),
     update: (id: number, body: T.JobInput) => call<T.Job>(`/jobs/${id}`, { method: 'PUT', body }),
+    /** One vacancy at several outlets: a job each, all or none. */
+    createAtOutlets: (outletIds: number[], job: T.JobInput, publish: boolean) =>
+      call<T.Job[]>('/jobs/multi-outlet', { method: 'POST', body: { outletIds, job, publish } }),
+    repost: (id: number) => call<T.Job>(`/jobs/${id}/repost`, { method: 'POST' }),
     transition: (id: number, action: 'publish' | 'pause' | 'resume' | 'close') =>
       call<T.Job>(`/jobs/${id}/${action}`, { method: 'POST' }),
     forRestaurant: (restaurantId: number) => call<T.Job[]>(`/restaurants/${restaurantId}/jobs`),
