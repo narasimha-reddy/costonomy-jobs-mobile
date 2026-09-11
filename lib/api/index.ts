@@ -32,6 +32,8 @@ export const api = {
     get: () => call<T.Me>('/users/me'),
     update: (body: { name?: string; preferredLanguage?: string }) =>
       call<T.Me>('/users/me', { method: 'PUT', body }),
+    deleteAccount: (reason?: string) =>
+      call<void>('/users/me/delete-request', { method: 'POST', body: { reason: reason || null } }),
   },
 
   taxonomy: {

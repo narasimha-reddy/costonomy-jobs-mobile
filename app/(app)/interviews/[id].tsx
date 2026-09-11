@@ -142,7 +142,7 @@ export default function InterviewDetail() {
 
       <Section>
         <ListGroup>
-          <ListRow icon="briefcase-outline" title={interview.jobTitle ?? ''} subtitle={isCandidate ? interview.restaurantName ?? undefined : t('interview.with', { name: interview.candidateName ?? '' })} />
+          <ListRow icon="briefcase-outline" title={interview.jobTitle ?? ''} subtitle={isCandidate ? interview.restaurantName ?? undefined : t('interview.with', { name: interview.candidateName ?? t('common.deletedAccount') })} />
           <ListRow
             icon={interview.interviewType === 'IN_PERSON' ? 'location-outline' : interview.interviewType === 'PHONE' ? 'call-outline' : 'videocam-outline'}
             title={t(`interview.type.${interview.interviewType}` as MessageKey)}

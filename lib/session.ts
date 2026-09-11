@@ -194,6 +194,14 @@ export async function signOut() {
   await clearLocal();
 }
 
+/**
+ * After the account has been deleted: the server has already ended every session,
+ * so there is nothing to log out of — only local state to forget.
+ */
+export async function forgetDeletedAccount() {
+  await clearLocal();
+}
+
 async function clearLocal() {
   accessToken = undefined;
   refreshToken = undefined;

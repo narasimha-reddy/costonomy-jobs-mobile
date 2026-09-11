@@ -117,7 +117,7 @@ export default function RestaurantApplication() {
       <View style={styles.hero}>
         <Avatar name={a.candidateName} uri={a.candidate?.profilePhotoUrl} size="xl" />
         <Txt variant="title" style={{ marginTop: Spacing.md }} align="center">
-          {a.candidateName}
+          {a.candidateName ?? t('common.deletedAccount')}
         </Txt>
         <Txt variant="body" color={Colors.textSecondary} align="center">
           {t('rapp.appliedFor', { job: a.jobTitle ?? '' })}

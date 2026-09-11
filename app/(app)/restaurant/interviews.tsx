@@ -60,7 +60,7 @@ export default function RestaurantInterviews() {
               <Avatar name={item.candidateName} size="sm" />
               <View style={{ flex: 1, gap: 2 }}>
                 <Txt variant="bodyStrong" numberOfLines={1}>
-                  {item.candidateName}
+                  {item.candidateName ?? t('common.deletedAccount')}
                 </Txt>
                 <Txt variant="caption" color={Colors.textSecondary} numberOfLines={1}>
                   {[item.jobTitle, t(`interview.type.${item.interviewType}` as MessageKey)].filter(Boolean).join(' · ')}

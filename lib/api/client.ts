@@ -127,7 +127,11 @@ export async function request<T>(path: string, opts: RequestOptions = {}): Promi
   const envelope = await parse<T>(response);
   if (!response.ok || envelope.error) {
     const e = envelope.error;
-    if (response.status === 401 && opts.authenticated !== false) auth.signedOut();
+    // 401 is a dead session. A deleted or suspended account answers 403 on every
+    // request, so staying signed in would only show the same error on every screen.
+    if (opts.authenticated !== false && (response.status === 401 || e?.code === 'ACCOUNT_DELETED' || e?.code === 'ACCOUNT_SUSPENDED')) {
+      auth.signedOut();
+    }
     throw new ApiError(e?.code ?? 'UNEXPECTED', e?.message ?? 'Something went wrong', response.status, e?.fieldErrors);
   }
 

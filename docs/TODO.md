@@ -33,8 +33,7 @@ the Alerts tab polls the unread count every 30 seconds.
 
 - [ ] App icon, adaptive icon, splash, notification icon and favicon — `app.json`
       points at five files in `assets/` that do not exist yet, so a native build fails
-- [ ] Account deletion — required by both app stores. `POST /users/me/delete-request`
-      per `09-security-privacy-admin.md` §3; not built in the API or the app
+- [x] Account deletion — Settings → Delete account (`POST /users/me/delete-request`)
 - [ ] Production API URL per build profile (`EXPO_PUBLIC_API_URL`)
 - [ ] Run on real Android and iOS phones: camera, document picker, location check-in
       and secure storage have only been exercised on web

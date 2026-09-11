@@ -171,11 +171,11 @@ function CandidateRow({ application: a }: { application: Application }) {
   const c = a.candidate;
   return (
     <TouchableOpacity onPress={() => router.push(`/hiring/applications/${a.id}`)} activeOpacity={PRESS_OPACITY} style={styles.card} accessibilityRole="button">
-      <Avatar name={a.candidateName} />
+      <Avatar name={a.candidateName} uri={a.candidate?.profilePhotoUrl} />
       <View style={{ flex: 1, gap: 2 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: Spacing.sm }}>
           <Txt variant="subheading" numberOfLines={1} style={{ flexShrink: 1 }}>
-            {a.candidateName}
+            {a.candidateName ?? t('common.deletedAccount')}
           </Txt>
           {a.status === 'APPLIED' && <View style={styles.newDot} />}
         </View>

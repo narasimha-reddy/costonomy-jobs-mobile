@@ -63,6 +63,12 @@ export default function Settings() {
         </ListGroup>
       </Section>
 
+      <Section>
+        <ListGroup>
+          <ListRow icon="trash-outline" title={t('deleteAccount.title')} danger onPress={() => router.push('/settings/delete-account')} />
+        </ListGroup>
+      </Section>
+
       <Txt variant="caption" color={Colors.textTertiary} align="center" style={{ marginTop: Spacing.xxl }}>
         Costonomy Jobs {Constants.expoConfig?.version ?? ''}
       </Txt>

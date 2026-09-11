@@ -626,5 +626,22 @@
   "contact.title": "Contact {name}",
   "contact.call": "Call",
   "contact.whatsapp": "WhatsApp",
-  "contact.hint": "Use this number only to talk about work. Each time a number is shown, it is recorded."
+  "contact.hint": "Use this number only to talk about work. Each time a number is shown, it is recorded.",
+  "deleteAccount.title": "Delete account",
+  "deleteAccount.heading": "Delete your account?",
+  "deleteAccount.intro": "This is what happens when you delete your Costonomy Jobs account.",
+  "deleteAccount.now": "Straight away",
+  "deleteAccount.signedOut": "You are signed out on every phone, and can't sign in again with this account.",
+  "deleteAccount.hiring": "Upcoming interviews are cancelled, offers you haven't answered are declined, and your applications are withdrawn. Restaurants are told.",
+  "deleteAccount.search": "Your profile no longer appears to restaurants.",
+  "deleteAccount.restaurant": "Restaurants you run on your own are closed, and their jobs are taken down.",
+  "deleteAccount.later": "After 30 days",
+  "deleteAccount.erased": "Your name, mobile number, photo, resume and work history are erased. Restaurants keep their own hiring records, without your details.",
+  "deleteAccount.restore": "Changed your mind within 30 days? Contact support and we can restore it.",
+  "deleteAccount.button": "Delete my account",
+  "deleteAccount.confirm": "Delete your account permanently?",
+  "deleteAccount.confirmBody": "You can't undo this from the app.",
+  "deleteAccount.reason": "Why are you leaving? (optional)",
+  "deleteAccount.done": "Your account has been deleted",
+  "common.deletedAccount": "Deleted account"
 }
