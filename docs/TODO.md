@@ -6,7 +6,7 @@ what blocks the most.
 ## Push notifications — waiting on Firebase setup
 
 The API side is built (`costonomy-jobs-api/docs/push-fcm.md`). Until this is done
-the Alerts tab polls the unread count every 30 seconds.
+the Inbox tab polls the unread count every 30 seconds.
 
 **To provide:**
 - [ ] Firebase project ID
@@ -21,7 +21,7 @@ the Alerts tab polls the unread count every 30 seconds.
 - [ ] Confirm `com.costonomy.jobs` as the permanent app id
 
 **Then build:**
-- [ ] `eas.json` and a development build (push does not work in Expo Go)
+- [ ] A development build with the `development` profile in `eas.json` (push does not work in Expo Go)
 - [ ] `expo-notifications` for permission and display; `@react-native-firebase/messaging`
       for the token (iOS must send an FCM token, not the raw APNs token)
 - [ ] Add the `expo-notifications` plugin with `icon: ./assets/notification-icon.png`
@@ -43,6 +43,8 @@ the Alerts tab polls the unread count every 30 seconds.
       and secure storage have only been exercised on web
 - [x] Crash reporting — Sentry in the app and the API, off until a DSN is set; no
       personal data, phone numbers masked, signed-URL query strings stripped
+- [ ] **To provide:** an S3 bucket for photos and documents (region, bucket, an access
+      key limited to it) — steps in `costonomy-jobs-api/docs/storage-s3.md`
 - [ ] **To provide:** a Sentry project for each (app, API) → `EXPO_PUBLIC_SENTRY_DSN`
       in the EAS environments, `SENTRY_DSN` on the server; `SENTRY_AUTH_TOKEN` in EAS
       for source-map upload
