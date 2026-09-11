@@ -1,6 +1,7 @@
-import { useWindowDimensions } from 'react-native';
+import { Platform, useWindowDimensions } from 'react-native';
 import {
   ContentMaxWidth,
+  WEB_FRAME_WIDTH,
   Gutter,
   sizeClassFor,
   type SizeClass,
@@ -20,7 +21,11 @@ export function useResponsive(): {
   contentMaxWidth: number | null;
   gutter: number;
 } {
-  const { width, height } = useWindowDimensions();
+  const window = useWindowDimensions();
+  // On web the layout lives inside the phone frame (components/app/WebFrame), so
+  // it is the frame's width that decides the layout, not the browser window's.
+  const width = Platform.OS === 'web' ? Math.min(window.width, WEB_FRAME_WIDTH) : window.width;
+  const height = window.height;
   const sizeClass = sizeClassFor(width, height);
 
   return {

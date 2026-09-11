@@ -23,6 +23,13 @@ export const Breakpoints = {
 
 export type SizeClass = 'compact' | 'medium' | 'expanded';
 
+/**
+ * In a desktop browser the app renders as a phone-width column, the same 430 as
+ * costonomy-mobile-app's web frame, so the web build shows the phone layout —
+ * which is the product — rather than a stretched tablet one.
+ */
+export const WEB_FRAME_WIDTH = 430;
+
 export const TABLET_MIN_SHORT_SIDE = Breakpoints.medium;
 
 /**

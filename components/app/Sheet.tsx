@@ -13,7 +13,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '@/constants/colors';
 import { Spacing, Shadows } from '@/constants/spacing';
 import { Duration } from '@/constants/motion';
-import { SHEET_MAX_WIDTH_TABLET } from '@/constants/breakpoints';
+import { SHEET_MAX_WIDTH_TABLET, WEB_FRAME_WIDTH } from '@/constants/breakpoints';
 import { useResponsive } from '@/hooks/useResponsive';
 import { Txt } from './Txt';
 
@@ -71,6 +71,8 @@ export function Sheet({ visible, onClose, title, subtitle, children, footer, tal
               paddingBottom: footer ? 0 : Math.max(insets.bottom, Spacing.lg),
             },
             isTablet && { maxWidth: SHEET_MAX_WIDTH_TABLET, alignSelf: 'center', width: '100%' },
+            // A Modal renders over the whole browser window; keep the sheet in the phone column.
+            Platform.OS === 'web' && { maxWidth: WEB_FRAME_WIDTH, marginHorizontal: 'auto' },
             tall && { height: height * 0.9 },
           ]}
         >

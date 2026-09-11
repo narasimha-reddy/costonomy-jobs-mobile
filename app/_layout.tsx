@@ -11,6 +11,7 @@ import { queryClient } from '@/lib/query';
 import { bootstrap, useSession } from '@/lib/session';
 import { ToastHost } from '@/components/app/Feedback';
 import { OfflineBanner } from '@/components/app/OfflineBanner';
+import { WebFrame } from '@/components/app/WebFrame';
 import '@/lib/network';
 import { identify, initMonitoring, wrapRoot } from '@/lib/monitoring';
 
@@ -41,6 +42,7 @@ function RootLayout() {
 
   return (
     <SafeAreaProvider>
+      <WebFrame>
       <QueryClientProvider client={queryClient}>
         <StatusBar style="dark" />
         <Stack
@@ -63,6 +65,7 @@ function RootLayout() {
         <OfflineBanner />
         <ToastHost />
       </QueryClientProvider>
+      </WebFrame>
     </SafeAreaProvider>
   );
 }
