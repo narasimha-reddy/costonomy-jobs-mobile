@@ -307,6 +307,8 @@ cd ../costonomy-jobs-api && mvn spring-boot:run -Dspring-boot.run.profiles=dev
 npx expo start
 ```
 
+Checks: `npm test` (Jest), `npm run typecheck`, `npm run lint:locales`.
+
 The API URL defaults to the Expo dev host on port 8080; override with
 `EXPO_PUBLIC_API_URL`. Demo logins: owner `+919000000001`, candidate
 `+919000000101`.

@@ -59,7 +59,8 @@ the Alerts tab polls the unread count every 30 seconds.
 
 ## Quality
 
-- [ ] Automated tests — today only `npm run typecheck` and `npm run lint:locales`
+- [x] Automated tests — `npm test` (Jest): formatting, translations, the API client's
+      session handling, uploads, crash-report scrubbing, Chip and Avatar
 - [x] Offline state: one app-wide banner; queries pause offline and refetch on reconnect
 
 ## Later (P1 in the backlog)

@@ -16,8 +16,8 @@ const DSN = process.env.EXPO_PUBLIC_SENTRY_DSN;
 export const monitoringEnabled = Boolean(DSN) && !__DEV__;
 
 const PHONE = /\+?91[\s-]?[6-9]\d{4}[\s-]?\d{5}|\b[6-9]\d{9}\b/g;
-const scrub = (text: string | undefined) => text?.replace(PHONE, '[phone]');
-const stripQuery = (url: string | undefined) => url?.split('?')[0];
+export const scrub = (text: string | undefined) => text?.replace(PHONE, '[phone]');
+export const stripQuery = (url: string | undefined) => url?.split('?')[0];
 
 export function initMonitoring() {
   if (!monitoringEnabled) return;
