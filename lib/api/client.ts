@@ -1,4 +1,4 @@
-import { API_URL } from '@/lib/config';
+import { API_URL, COMMON_URL } from '@/lib/config';
 import { getLocale } from '@/lib/locale';
 import type { Envelope } from './types';
 
@@ -57,35 +57,37 @@ export function bindAuth(binding: AuthBinding) {
 type Query = Record<string, string | number | boolean | undefined | null | (string | number)[]>;
 
 interface RequestOptions {
-  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   body?: unknown;
   query?: Query;
   /** False for the handful of public endpoints (OTP, reference data). */
   authenticated?: boolean;
+  /** A token to send instead of the session's: the first call after sign-in, before the session holds it. */
+  token?: string;
 }
 
-function buildUrl(path: string, query?: Query): string {
-  if (!query) return API_URL + path;
+function buildUrl(path: string, query?: Query, base = API_URL): string {
+  if (!query) return base + path;
   const params: string[] = [];
   for (const [key, value] of Object.entries(query)) {
     if (value === undefined || value === null || value === '') continue;
     const values = Array.isArray(value) ? value : [value];
     for (const v of values) params.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(v))}`);
   }
-  return params.length ? `${API_URL}${path}?${params.join('&')}` : API_URL + path;
+  return params.length ? `${base}${path}?${params.join('&')}` : base + path;
 }
 
-async function send(path: string, opts: RequestOptions): Promise<Response> {
+async function send(path: string, opts: RequestOptions, base = API_URL): Promise<Response> {
   const headers: Record<string, string> = {
     Accept: 'application/json',
     'Accept-Language': getLocale(),
   };
   if (opts.body !== undefined) headers['Content-Type'] = 'application/json';
-  const token = opts.authenticated === false ? undefined : auth.accessToken();
+  const token = opts.authenticated === false ? undefined : opts.token ?? auth.accessToken();
   if (token) headers.Authorization = `Bearer ${token}`;
 
   try {
-    return await fetch(buildUrl(path, opts.query), {
+    return await fetch(buildUrl(path, opts.query, base), {
       method: opts.method ?? 'GET',
       headers,
       body: opts.body === undefined ? undefined : JSON.stringify(opts.body),
@@ -147,4 +149,28 @@ export async function request<T>(path: string, opts: RequestOptions = {}): Promi
 /** The common case: just the data. */
 export async function call<T>(path: string, opts: RequestOptions = {}): Promise<T> {
   return (await request<T>(path, opts)).data;
+}
+
+/**
+ * A call to costonomy-common-api. Same session and the same one refresh on an expired token; common answers with the
+ * resource itself (no envelope) and errors as `{ error: { code, message, details } }`.
+ */
+export async function commonCall<T>(path: string, opts: RequestOptions = {}): Promise<T> {
+  let response = await send(path, opts, COMMON_URL);
+  if (response.status === 401 && opts.authenticated !== false && !opts.token) {
+    const body = await response.clone().json().catch(() => null);
+    if (body?.error?.code === 'TOKEN_EXPIRED' && (await auth.refresh())) {
+      response = await send(path, opts, COMMON_URL);
+    }
+  }
+  if (response.status === 204) return undefined as T;
+  const body = await response.json().catch(() => null);
+  if (!response.ok) {
+    const e = body?.error;
+    if (opts.authenticated !== false && !opts.token && response.status === 401) auth.signedOut();
+    const fields = e?.details?.fields as Record<string, string> | undefined;
+    throw new ApiError(e?.code ?? 'UNEXPECTED', e?.message ?? 'Something went wrong', response.status,
+      fields ? Object.entries(fields).map(([field, message]) => ({ field, message })) : []);
+  }
+  return body as T;
 }

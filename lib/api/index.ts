@@ -1,4 +1,5 @@
 import { call, request } from './client';
+import * as common from './common';
 import type * as T from './types';
 
 export { ApiError } from './client';
@@ -11,27 +12,18 @@ const PAGE = 20;
  * never build a URL themselves.
  */
 export const api = {
+  // Sign-in and sessions are costonomy-common-api's (lib/api/common).
   auth: {
-    sendOtp: (mobileNumber: string) =>
-      call<{ otpSentTo: string; expiresInSeconds: number }>('/auth/send-otp', {
-        method: 'POST', body: { mobileNumber }, authenticated: false,
-      }),
+    sendOtp: (mobileNumber: string) => common.sendOtp(mobileNumber),
     verifyOtp: (mobileNumber: string, otp: string, preferredLanguage: string) =>
-      call<T.VerifyOtpResponse>('/auth/verify-otp', {
-        method: 'POST', body: { mobileNumber, otp, preferredLanguage }, authenticated: false,
-      }),
-    refresh: (refreshToken: string) =>
-      call<{ accessToken: string; refreshToken: string; expiresInSeconds: number }>('/auth/refresh', {
-        method: 'POST', body: { refreshToken }, authenticated: false,
-      }),
-    logout: (refreshToken: string) =>
-      call<void>('/auth/logout', { method: 'POST', body: { refreshToken } }),
+      common.verifyOtp(mobileNumber, otp, preferredLanguage),
+    refresh: (refreshToken: string) => common.refresh(refreshToken),
+    logout: (refreshToken: string) => common.logout(refreshToken),
   },
 
   me: {
     get: () => call<T.Me>('/users/me'),
-    update: (body: { name?: string; preferredLanguage?: string }) =>
-      call<T.Me>('/users/me', { method: 'PUT', body }),
+    update: (body: { name?: string; preferredLanguage?: string }) => common.updateMe(body),
     deleteAccount: (reason?: string) =>
       call<void>('/users/me/delete-request', { method: 'POST', body: { reason: reason || null } }),
   },
@@ -154,10 +146,11 @@ export const api = {
   restaurants: {
     mine: () => call<T.Restaurant[]>('/restaurants/me'),
     get: (id: number) => call<T.Restaurant>(`/restaurants/${id}`),
+    // The business, its outlets and team are costonomy-common-api's; Jobs adds its hiring details (lib/api/common).
     create: (body: { name: string; restaurantType?: string | null; description?: string | null; firstOutlet: T.OutletInput }) =>
-      call<T.Restaurant>('/restaurants', { method: 'POST', body }),
+      common.createRestaurant(body),
     update: (id: number, body: { name: string; restaurantType?: string | null; description?: string | null }) =>
-      call<T.Restaurant>(`/restaurants/${id}`, { method: 'PUT', body }),
+      common.updateRestaurant(id, body),
     logoUpload: (id: number, contentType: string, sizeBytes: number) =>
       call<T.UploadTicket>(`/restaurants/${id}/logo/uploads`, { method: 'POST', body: { contentType, sizeBytes } }),
     setLogo: (id: number, uploadToken: string) =>
@@ -166,17 +159,14 @@ export const api = {
     contact: (id: number, employeeId: number) =>
       call<T.CandidateContact>(`/restaurants/${id}/candidates/${employeeId}/contact`, { method: 'POST' }),
     outlets: (id: number) => call<T.Outlet[]>(`/restaurants/${id}/outlets`),
-    addOutlet: (id: number, body: T.OutletInput) =>
-      call<T.Outlet>(`/restaurants/${id}/outlets`, { method: 'POST', body }),
-    updateOutlet: (outletId: number, body: T.OutletInput) =>
-      call<T.Outlet>(`/outlets/${outletId}`, { method: 'PUT', body }),
-    team: (id: number) => call<T.TeamMember[]>(`/restaurants/${id}/users`),
+    addOutlet: (id: number, body: T.OutletInput) => common.addOutlet(id, body),
+    updateOutlet: (outletId: number, body: T.OutletInput) => common.updateOutlet(outletId, body),
+    team: (id: number) => common.team(id),
     invite: (id: number, body: { mobileNumber: string; name?: string | null; role: string; outletIds?: number[] }) =>
-      call<T.TeamMember>(`/restaurants/${id}/users`, { method: 'POST', body }),
+      common.invite(id, body),
     updateMember: (id: number, restaurantUserId: number, body: { role: string; outletIds: number[] }) =>
-      call<T.TeamMember>(`/restaurants/${id}/users/${restaurantUserId}`, { method: 'PUT', body }),
-    removeMember: (id: number, restaurantUserId: number) =>
-      call<void>(`/restaurants/${id}/users/${restaurantUserId}`, { method: 'DELETE' }),
+      common.updateMember(id, restaurantUserId, body),
+    removeMember: (id: number, restaurantUserId: number) => common.removeMember(id, restaurantUserId),
     candidates: (id: number, query: {
       jobId?: number; cityId?: number; localityId?: number; roleId?: number; minExperienceMonths?: number;
       maxExpectedSalary?: number; availability?: string; skillIds?: number[];
